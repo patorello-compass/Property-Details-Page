@@ -1,0 +1,814 @@
+/* ==========================================================================
+   Page chrome and content sections
+   --------------------------------------------------------------------------
+   Lower-fidelity than the hero gallery by design — enough structure to give
+   the slider a realistic page around it. Layout numbers still come from
+   production: 1122px content container, 732px main column, 366px sidebar.
+   ========================================================================== */
+
+/* --- Top bar -------------------------------------------------------------
+   Production `.uc-corpNav`, measured at 1440:
+     bar          48px tall, white, 1px bottom border at 10% black
+     logo link    x 0, w 152, padding 0 24px 0 16px, 112×16 logotype
+     search       x 152, y 4, 380px field + 40px button = 420 × 40
+     menu         x 677, padding 0 10px, items padding 0 10px, 500 16/24
+     user menu    padding 0 10px, ends flush at the right edge
+   ------------------------------------------------------------------------ */
+
+.ldp-topbar {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  border-bottom: var(--cx-spacing-borderWidth) solid rgba(0, 0, 0, 0.1);
+  background: var(--cx-color-background);
+}
+
+.ldp-topbar__header {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  align-self: stretch;
+}
+
+.ldp-logo {
+  display: flex;
+  align-items: center;
+  flex: none;
+  align-self: stretch;
+  padding: 0 var(--cx-spacing-3x) 0 var(--cx-spacing-2x);
+  color: var(--cx-color-text);
+  text-decoration: none;
+}
+
+.ldp-logo__mark {
+  display: block;
+  fill: currentColor;
+}
+
+/* --- Search (DS Search input, Groups & Inputs radius) --------------------- */
+
+.ldp-search {
+  display: flex;
+  flex: 0 1 auto;
+  min-width: 0;
+  height: 40px;
+}
+
+.ldp-search__field {
+  display: flex;
+  align-items: center;
+  width: 380px;
+  min-width: 0;
+  height: 40px;
+  border: var(--cx-spacing-borderWidth) solid var(--cx-color-border);
+  border-radius: var(--cx-consumer-groupBorderRadius) 0 0
+    var(--cx-consumer-groupBorderRadius);
+  background: var(--cx-color-background);
+}
+
+.ldp-search__input {
+  width: 100%;
+  height: 38px;
+  padding: var(--cx-spacing-1x);
+  border: 0;
+  background: transparent;
+  font-family: var(--cx-font-familySans);
+  font-size: var(--cx-font-sizeBody1);
+  line-height: 18.4px;
+  color: var(--cx-color-black);
+}
+
+.ldp-search__input:focus {
+  outline: none;
+}
+
+/* Production sets the placeholder two steps down from the input's own size */
+.ldp-search__input::placeholder {
+  font-size: var(--cx-font-sizeBody2);
+  color: var(--cx-color-textDisabled);
+}
+
+.ldp-search__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 0 var(--cx-consumer-groupBorderRadius)
+    var(--cx-consumer-groupBorderRadius) 0;
+  background: var(--cx-color-black);
+  color: var(--cx-color-onDarkText);
+  cursor: pointer;
+}
+
+.ldp-search__btn:hover {
+  background: var(--cx-color-grey110);
+}
+
+/* --- Top bar menus -------------------------------------------------------- */
+
+.ldp-topbar__menu,
+.ldp-topbar__user {
+  display: flex;
+  align-items: stretch;
+  flex: none;
+  align-self: stretch;
+  padding: 0 10px;
+}
+
+.ldp-topbar__item {
+  display: flex;
+  align-items: center;
+  gap: var(--cx-spacing-half);
+  padding: 0 10px;
+  border: 0;
+  background: none;
+  font-family: var(--cx-font-familySans);
+  font-size: var(--cx-font-sizeBody1);
+  font-weight: var(--cx-font-weightMedium);
+  line-height: 24px;
+  color: var(--cx-color-text);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.ldp-topbar__item:hover {
+  color: var(--cx-color-secondaryLinkHover);
+}
+
+.ldp-topbar__caret {
+  fill: currentColor;
+}
+
+/* --- Section nav ---------------------------------------------------------
+   Production sticky nav: 58px tall, tabs 14/21 in Neutral 80 with a 48px
+   gap, Save/Share as md enclosed pills at 16px.
+   ------------------------------------------------------------------------ */
+
+.ldp-subnav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  height: 58px;
+  padding: 0 20px 0 var(--cx-spacing-3x);
+  border-bottom: var(--cx-spacing-borderWidth) solid rgb(197, 197, 197);
+  background: var(--cx-color-background);
+}
+
+.ldp-subnav__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cx-spacing-1x);
+  flex: none;
+  padding: var(--cx-spacing-1x) 0;
+  font-size: var(--cx-font-sizeBody2);
+  line-height: 18.2px;
+  text-decoration: none;
+  color: var(--cx-color-black);
+}
+
+.ldp-subnav__back .cx-icon {
+  fill: currentColor;
+}
+
+/* Tabs left-align from x=136 at 1440, as in production */
+.ldp-subnav__wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex: 1;
+  min-width: 0;
+  padding-left: 46px;
+  overflow: hidden;
+}
+
+.ldp-subnav__tabs {
+  display: flex;
+  align-self: stretch;
+  gap: 48px;
+}
+
+/* Full-height links so the active underline can sit on the bar's bottom edge
+   rather than under the text — production draws it as a separate 2px bar
+   there, spanning exactly the active tab's width. */
+.ldp-subnav__tabs a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-size: var(--cx-font-sizeBody2);
+  line-height: 21px;
+  color: var(--cx-color-textSubtle);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.ldp-subnav__tabs a:hover {
+  color: var(--cx-color-black);
+}
+
+.ldp-subnav__tabs a.is-active {
+  color: var(--cx-color-black);
+}
+
+.ldp-subnav__tabs a.is-active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--cx-color-black);
+}
+
+.ldp-subnav__actions {
+  display: flex;
+  gap: 12px;
+  flex: none;
+}
+
+/* Both buttons render at a uniform 105px in production */
+.ldp-subnav__actions .cx-btn {
+  min-width: 105px;
+}
+
+/* --- Layout --------------------------------------------------------------- */
+
+/* Columns are 2fr / 1fr of the container's content box, with a 280px floor on
+   the sidebar. At 1440 that resolves to exactly 732 / 366, at 1920 to
+   976 / 488, and at 900 the floor kicks in to give 548 / 280 — all matching
+   production. */
+.ldp-layout {
+  display: grid;
+  grid-template-columns: 2fr minmax(280px, 1fr);
+  column-gap: var(--cx-spacing-3x);
+  align-items: start;
+  padding-bottom: var(--cx-spacing-8x);
+}
+
+/* --- Summary -------------------------------------------------------------
+   Production `summary__Root`: flex, gap 10px, padding 24px 0, w 732.
+   The 120×120 map thumbnail is the second flex child — it belongs to the
+   summary block, not the sidebar — and is top-aligned against the text.
+   ------------------------------------------------------------------------ */
+
+.ldp-summary {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: var(--cx-spacing-3x) 0;
+}
+
+.ldp-summary__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.ldp-summary__map {
+  flex: none;
+  width: 120px;
+  height: 120px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  overflow: hidden;
+  background: var(--cx-color-backgroundAccent);
+  cursor: pointer;
+}
+
+.ldp-summary__map img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ldp-status {
+  display: flex;
+  align-items: center;
+  gap: var(--cx-spacing-1x);
+  font-size: var(--cx-font-sizeBody1);
+  color: var(--cx-color-black);
+}
+
+.ldp-status__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cx-color-listingActive);
+}
+
+/* The pill is vertically centred on the price, not baseline-aligned */
+.ldp-price-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: var(--cx-spacing-half);
+}
+
+.ldp-price {
+  font-size: var(--cx-font-sizeHeader3);
+  font-weight: var(--cx-font-weightMedium);
+  line-height: var(--cx-font-lineHeightCompact);
+  color: var(--cx-color-black);
+}
+
+/* `mortgage-estimate__EstimatePill` */
+.ldp-price-est {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cx-spacing-half);
+  padding: var(--cx-spacing-half) var(--cx-spacing-1x);
+  border-radius: 999px;
+  background: var(--cx-color-grey30);
+  font-family: var(--cx-font-familySans);
+  font-size: var(--cx-font-sizeCaption1);
+  font-weight: var(--cx-font-weightMedium);
+  line-height: 18px;
+  color: var(--cx-color-black);
+  white-space: nowrap;
+}
+
+.ldp-price-est .cx-link {
+  color: var(--cx-color-grey110);
+}
+
+.ldp-specs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--cx-spacing-1x);
+  margin-top: var(--cx-spacing-2x);
+}
+
+.ldp-specs__sep {
+  width: var(--cx-spacing-1x);
+}
+
+.ldp-address,
+.ldp-building {
+  margin-top: var(--cx-spacing-half);
+}
+
+/* --- Key facts ------------------------------------------------------------ */
+
+/* `key-facts__Grid` / `key-fact-item__Root` */
+.ldp-facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--cx-spacing-2x);
+}
+
+.ldp-fact {
+  display: flex;
+  align-items: center;
+  gap: var(--cx-spacing-2x);
+  min-height: 60px;
+  padding: 10px 20px;
+  border-radius: 6px;
+  background: var(--cx-color-backgroundAccent);
+}
+
+.ldp-fact__icon {
+  width: 24px;
+  height: 24px;
+  color: var(--cx-color-text);
+}
+
+.ldp-fact__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ldp-fact__value {
+  font-size: var(--cx-font-sizeBody1);
+  font-weight: var(--cx-font-weightMedium);
+  line-height: 20.8px;
+  color: var(--cx-color-black);
+}
+
+.ldp-fact__label {
+  font-size: var(--cx-font-sizeBody2);
+  line-height: 18.2px;
+  color: var(--cx-color-textSubtle);
+}
+
+/* --- Sections ------------------------------------------------------------- */
+
+/* Production's rhythm, which is much tighter than the DS spacing scale would
+   suggest: 32px between sections, 24px for the first one after the key facts,
+   and 12px under every section heading. */
+.ldp-section {
+  margin-top: var(--cx-spacing-4x);
+}
+
+.ldp-facts + .ldp-section {
+  margin-top: var(--cx-spacing-3x);
+}
+
+.ldp-section__title {
+  margin-bottom: 12px;
+}
+
+.ldp-description p + p {
+  margin-top: var(--cx-spacing-2x);
+}
+
+.ldp-description__clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ldp-description__clamp.is-open {
+  display: block;
+  overflow: visible;
+}
+
+.ldp-readmore {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cx-spacing-half);
+  margin-top: var(--cx-spacing-2x);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--cx-color-secondaryLink);
+  cursor: pointer;
+}
+
+.ldp-readmore.is-open svg {
+  transform: rotate(180deg);
+}
+
+.ldp-listed-by {
+  margin-top: var(--cx-spacing-2x);
+  color: var(--cx-color-textSubtle);
+}
+
+/* --- Agents --------------------------------------------------------------- */
+
+.ldp-agent {
+  display: flex;
+  gap: var(--cx-spacing-2x);
+  padding: 0 var(--cx-spacing-2x) var(--cx-spacing-3x);
+  border-bottom: var(--cx-spacing-borderWidth) solid var(--cx-color-border);
+}
+
+.ldp-agent + .ldp-agent {
+  padding-top: var(--cx-spacing-3x);
+}
+
+/* cx-avatar--xxl */
+.ldp-agent__photo {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+}
+
+/* `listing-info__Root` — 16px above, 16px of its own padding */
+.ldp-meta {
+  margin-top: var(--cx-spacing-2x);
+  padding: var(--cx-spacing-2x) 0;
+}
+
+.ldp-meta p + p {
+  margin-top: var(--cx-spacing-half);
+}
+
+/* --- Location ------------------------------------------------------------- */
+
+.ldp-breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cx-spacing-half);
+  margin-bottom: var(--cx-spacing-2x);
+}
+
+.ldp-breadcrumbs__sep {
+  color: var(--cx-color-textSubtle);
+}
+
+.ldp-map {
+  position: relative;
+  margin: 0;
+  height: 300px;
+  overflow: hidden;
+  border-radius: var(--cx-consumer-groupBorderRadius);
+  background: var(--cx-color-backgroundAccent);
+}
+
+.ldp-map img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ldp-map__marker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+}
+
+.ldp-map__caption {
+  position: absolute;
+  left: var(--cx-spacing-1x);
+  bottom: var(--cx-spacing-1x);
+  padding: var(--cx-spacing-half) var(--cx-spacing-1x);
+  border-radius: var(--cx-consumer-groupBorderRadius);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--cx-color-textSubtle);
+}
+
+.ldp-commute {
+  display: flex;
+  align-items: center;
+  gap: var(--cx-spacing-1x);
+  width: 100%;
+  margin-top: var(--cx-spacing-2x);
+  padding: var(--cx-spacing-2x);
+  border: 0;
+  border-radius: var(--cx-consumer-groupBorderRadius);
+  background: var(--cx-color-backgroundAccent);
+  text-align: left;
+  cursor: pointer;
+}
+
+/* --- Payment calculator --------------------------------------------------- */
+
+.ldp-preapproved {
+  display: inline-block;
+  margin-bottom: var(--cx-spacing-2x);
+}
+
+.ldp-calc {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--cx-spacing-4x);
+  align-items: start;
+}
+
+.ldp-calc__summary {
+  padding: var(--cx-spacing-3x);
+  border: var(--cx-spacing-borderWidth) solid var(--cx-color-border);
+  border-radius: var(--cx-consumer-groupBorderRadius);
+  text-align: center;
+}
+
+.ldp-calc__amount {
+  margin-bottom: var(--cx-spacing-half);
+}
+
+.ldp-calc__bar {
+  height: 6px;
+  margin-top: var(--cx-spacing-2x);
+  border-radius: 3px;
+  background: var(--cx-color-grey30);
+  overflow: hidden;
+}
+
+.ldp-calc__bar span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--cx-color-blue80);
+}
+
+.ldp-calc__row {
+  display: flex;
+  align-items: center;
+  gap: var(--cx-spacing-1x);
+  padding: var(--cx-spacing-1x) 0;
+}
+
+.ldp-calc__swatch {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  background: var(--cx-color-blue80);
+}
+.ldp-calc__swatch--tax {
+  background: var(--cx-color-blue50);
+}
+.ldp-calc__swatch--maint {
+  background: var(--cx-color-grey40);
+}
+
+.ldp-calc__value {
+  margin-left: auto;
+}
+
+.ldp-calc__fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--cx-spacing-2x);
+  margin-top: var(--cx-spacing-3x);
+}
+
+.ldp-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cx-spacing-half);
+}
+
+.ldp-field__label {
+  color: var(--cx-color-text);
+}
+
+.ldp-field__control {
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--cx-spacing-2x);
+  border: var(--cx-spacing-borderWidth) solid var(--cx-color-border);
+  border-radius: var(--cx-consumer-groupBorderRadius);
+  background: var(--cx-color-background);
+  font-family: var(--cx-font-familySans);
+  font-size: var(--cx-font-sizeBody2);
+  color: var(--cx-color-text);
+}
+
+.ldp-field__pair {
+  display: flex;
+  gap: var(--cx-spacing-1x);
+}
+
+.ldp-field__control--pct {
+  width: 84px;
+  flex: none;
+}
+
+.ldp-disclaimer {
+  margin-top: var(--cx-spacing-2x);
+}
+
+/* --- Sidebar -------------------------------------------------------------- */
+
+/* Production offsets the right column's first block 24px below the gallery */
+.ldp-sidebar {
+  padding-top: var(--cx-spacing-3x);
+}
+
+.ldp-sidebar__sticky {
+  position: sticky;
+  top: 72px;
+}
+
+/* Production `.info-content`: flex, gap 16px, inside a 24px 0 padded block.
+   Avatar is cx-avatar--xxl (96px); name is Subheader 2 Medium. */
+.ldp-contact {
+  display: flex;
+  align-items: center;
+  gap: var(--cx-spacing-2x);
+  padding: var(--cx-spacing-3x) 0;
+}
+
+.ldp-contact__photo {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+}
+
+.ldp-contact__body {
+  min-width: 0;
+}
+
+.ldp-contact__name {
+  font-size: var(--cx-font-sizeSubheader2);
+  font-weight: var(--cx-font-weightMedium);
+  line-height: 27px;
+}
+
+.ldp-contact__company,
+.ldp-contact__phone {
+  font-size: var(--cx-font-sizeBody2);
+  line-height: 21px;
+}
+
+.ldp-contact__company {
+  color: var(--cx-color-textSubtle);
+}
+
+/* CTA stack — production caps both buttons at 277px */
+.ldp-sidebar__ctas {
+  display: grid;
+  gap: var(--cx-spacing-2x);
+}
+
+.ldp-cta {
+  width: 100%;
+  max-width: 277px;
+  height: 60px;
+  border-radius: 9999px;
+  font-size: var(--cx-font-sizeBody1);
+}
+
+.ldp-cta__stack {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+.ldp-cta__sub {
+  font-size: var(--cx-font-sizeCaption1);
+  font-weight: var(--cx-font-weightRegular);
+  opacity: 0.85;
+}
+
+.ldp-cta--secondary {
+  height: 39px;
+  color: var(--cx-color-grey110);
+  border-color: var(--cx-color-grey60);
+}
+
+/* --- Footer --------------------------------------------------------------- */
+
+.ldp-footer {
+  padding: var(--cx-spacing-4x) 0;
+  border-top: var(--cx-spacing-borderWidth) solid var(--cx-color-border);
+  background: var(--cx-color-grey10);
+}
+
+/* --- Responsive ----------------------------------------------------------- */
+
+@media (max-width: 1023px) {
+  /* Figma `Breakpoints`: Navigation Items visibility = false at Tablet */
+  .ldp-topbar__menu {
+    display: none;
+  }
+
+  .ldp-calc,
+  .ldp-calc__fields {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--cx-spacing-2x);
+  }
+}
+
+/* Production collapses to a single column below 769px, not 1024px */
+@media (max-width: 768px) {
+  .ldp-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ldp-sidebar {
+    padding-top: 0;
+  }
+
+  .ldp-sidebar__sticky {
+    position: static;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Figma `Breakpoints`: Logo + Search group = false at Mobile */
+  .ldp-search {
+    display: none;
+  }
+
+  .ldp-facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ldp-summary__map {
+    display: none;
+  }
+
+  .ldp-agent {
+    padding-inline: 0;
+  }
+
+  .ldp-agent__photo,
+  .ldp-contact__photo {
+    width: 64px;
+    height: 64px;
+  }
+
+  .ldp-subnav__wrapper,
+  .ldp-subnav__actions {
+    display: none;
+  }
+
+  .ldp-subnav,
+  .ldp-topbar {
+    padding: 0 var(--cx-spacing-2x);
+  }
+
+  .ldp-logo {
+    padding-left: 0;
+  }
+}

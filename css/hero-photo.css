@@ -1,0 +1,208 @@
+/* ==========================================================================
+   Hero photo — the single-image LDP hero
+   --------------------------------------------------------------------------
+   A listing with one photo gets a plain image, not a carousel. This is its own
+   component: no track, no slides, no paging, no dependency on the gallery.
+
+   Frame, measured off production
+   (compass.com/homedetails/807-Lake-St-S-Unit-301-…):
+
+     • The section follows the content container, clamp(1170px, 80%, 1536px),
+       with a 16px side gutter and 16px above the photo.
+     • 450 tall, same as the carousel band (354 on tablet, 336 on mobile).
+     • A listing-status badge top-left, Street View bottom-left, both inset
+       12px from the photo's edges.
+     • An MLS attribution caption 10px below the photo.
+
+   Where we diverge: production lets the photo span the whole container at that
+   fixed height, which is 1138 × 450 (a 2.53 aspect) at 1440 and 1504 × 450
+   (3.34) by 1920 — far wider than anything the carousel crops to. With the
+   height capped, width is the only lever left.
+
+   So the frame is sized to **the main content column**: same left edge, same
+   width as the price block, description and everything else below it. That
+   bounds a landscape photo's aspect as a side effect (1.41 at 1024, 1.63 at
+   1440, 2.17 at its widest — the same territory as a carousel slide).
+
+   The frame also acts as a neutral mat, and the photo is centred on it at its
+   own ratio rather than stretched to fill. For a landscape photo the two are
+   the same size and no mat shows; for a portrait one the photo runs narrow and
+   the mat takes the rest. The content container is untouched either way.
+   ========================================================================== */
+
+.ldp-hero-photo {
+  /* ---- tunable geometry ---- */
+  --hero-photo-height: 450px;
+  --hero-photo-top-gap: var(--cx-spacing-2x);
+  --hero-photo-inset: 12px; /* badge / button inset from the photo edge */
+  --hero-photo-caption-gap: 10px;
+  --hero-photo-mat: var(--cx-color-backgroundAccent); /* Neutral 20 */
+  --hero-photo-mat-pad: 12px; /* grey visible around the photo */
+
+  /* Mirrors .ldp-container / .ldp-layout so the photo lands on the same
+     column as the content. Changing the page grid means changing these. */
+  --hero-photo-gutter: var(--cx-spacing-3x); /* .ldp-container padding */
+  --hero-photo-column-gap: var(--cx-spacing-3x); /* .ldp-layout gap */
+  --hero-photo-sidebar-min: 280px; /* .ldp-layout sidebar floor */
+
+  /* The main column: 2fr of the two-column grid, unless the sidebar has hit
+     its floor and is taking more than a third. `100%` here resolves against
+     the section's content box, which is the container's content box. */
+  --hero-photo-width: min(
+    calc((100% - var(--hero-photo-column-gap)) * 2 / 3),
+    calc(
+      100% - var(--hero-photo-column-gap) - var(--hero-photo-sidebar-min)
+    )
+  );
+
+  width: clamp(1170px, 80%, 1536px);
+  max-width: 100%;
+  margin: 0 auto;
+  padding: var(--hero-photo-top-gap) var(--hero-photo-gutter) 0;
+  background: var(--cx-color-background);
+}
+
+/* The frame is the main content column and acts as a mat; the photo sits
+   centred inside it at its own ratio, never stretched to fill. */
+.ldp-hero-photo__frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  height: var(--hero-photo-height);
+  max-width: var(--hero-photo-width);
+  padding: var(--hero-photo-mat-pad);
+  overflow: hidden;
+  background: var(--hero-photo-mat);
+}
+
+/* Sized to the photo, so badges and buttons sit on the image rather than on
+   the mat beside it. A landscape photo fills the frame, so the mat only shows
+   when the photo is narrower — see the portrait variant below. */
+.ldp-hero-photo__media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.ldp-hero-photo__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- Portrait variant ----------------------------------------------------
+   A 2:3 photo can't be cropped to a landscape frame without losing the
+   subject, so it runs at its natural ratio — full height, ~300px wide — and
+   the mat takes the rest. Same rule as the landscape case, just a narrower
+   photo: the frame never stretches the image to fill it.
+   ------------------------------------------------------------------------ */
+
+.ldp-hero-photo--portrait .ldp-hero-photo__media {
+  width: auto;
+}
+
+.ldp-hero-photo--portrait .ldp-hero-photo__img {
+  width: auto;
+  object-fit: contain;
+}
+
+/* --- Overlays ------------------------------------------------------------- */
+
+.ldp-hero-photo__badges {
+  position: absolute;
+  top: var(--cx-spacing-2x);
+  left: var(--hero-photo-inset);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--cx-spacing-1x);
+}
+
+.ldp-hero-photo__badge {
+  padding: var(--cx-spacing-half) var(--cx-spacing-1x);
+  border-radius: var(--cx-consumer-groupBorderRadius);
+  font-size: var(--cx-font-sizeBody1);
+  font-weight: var(--cx-font-weightMedium);
+  line-height: 1;
+}
+
+.ldp-hero-photo__badge--source {
+  background: var(--cx-color-black);
+  color: var(--cx-color-onDarkText);
+}
+
+.ldp-hero-photo__badge--status {
+  background: var(--cx-color-grey60);
+  color: var(--cx-color-text);
+}
+
+/* Listing-status badges use the `Listing/*` semantic colors */
+.ldp-hero-photo__badge--comingSoon {
+  background: var(--cx-color-listingComingSoon);
+  color: var(--cx-color-onDarkText);
+}
+
+/* Anchored to the frame, not the photo, so it keeps the same spot near the
+   left border whether the photo fills the mat or sits centred on it. The
+   offset clears the mat padding so it lands where it does when the photo
+   fills the frame. */
+.ldp-hero-photo__actions {
+  position: absolute;
+  left: calc(var(--hero-photo-mat-pad) + var(--hero-photo-inset));
+  bottom: calc(var(--hero-photo-mat-pad) + var(--hero-photo-inset));
+  display: flex;
+  gap: var(--hero-photo-inset);
+  z-index: 1;
+}
+
+/* --- Caption -------------------------------------------------------------- */
+
+.ldp-hero-photo__caption {
+  max-width: var(--hero-photo-width);
+  margin-top: var(--hero-photo-caption-gap);
+  font-size: var(--cx-font-sizeBody1);
+  line-height: var(--cx-font-lineHeightCompact);
+  color: var(--cx-color-textSubtle);
+}
+
+/* --- Responsive ----------------------------------------------------------
+   Height follows the same ladder as the carousel band; the gutter and column
+   width follow .ldp-container / .ldp-layout so the alignment holds.
+   ------------------------------------------------------------------------ */
+
+@media (max-width: 1023px) {
+  .ldp-hero-photo {
+    --hero-photo-height: 354px;
+  }
+}
+
+/* Below 769 the page grid is a single column, so the photo fills it. */
+@media (max-width: 768px) {
+  .ldp-hero-photo {
+    --hero-photo-gutter: var(--cx-spacing-2x);
+    --hero-photo-width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .ldp-hero-photo {
+    --hero-photo-height: 336px;
+    --hero-photo-top-gap: 0px;
+    --hero-photo-inset: 8px;
+    /* The mat follows the inset down: 12px of grey on a 343-wide frame eats
+       into a photo that is already short on room. */
+    --hero-photo-mat-pad: 8px;
+  }
+
+  .ldp-hero-photo__badge {
+    padding: 6px;
+    font-size: var(--cx-font-sizeCaption1);
+  }
+
+  .ldp-hero-photo__caption {
+    padding: 0 var(--cx-spacing-2x);
+    font-size: var(--cx-font-sizeBody2);
+  }
+}

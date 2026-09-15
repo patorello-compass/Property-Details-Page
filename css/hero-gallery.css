@@ -1,0 +1,356 @@
+/* ==========================================================================
+   Hero gallery — the LDP media carousel
+   --------------------------------------------------------------------------
+   Geometry measured off production (compass.com/homedetails/…/28YSFQ_pid):
+
+     • Band is full-bleed with a 16px page gutter and a 12px gap. Base height
+       is 450 (354 on tablet, 336 on mobile).
+     • Two slides are visible at a time, each (band − gap) / 2 wide — 698px at
+       1440, 618px at 1280.
+     • A slide is either one big photo or a grid of `columns × 2` small ones,
+       both in the same footprint. Sequence: big, grid…, then any tail too
+       short to fill a grid as big photos again.
+     • Paging advances a whole view and is contained at both ends.
+
+   Where we diverge from production, deliberately: production pins the band at
+   450 and caps the whole gallery at 2000px. We stay full-bleed and let the
+   band grow taller instead, so the big photo keeps its aspect as the viewport
+   widens (see `--gallery-hero-ratio` below) rather than stretching.
+
+   Every number that matters is a custom property in .ldp-gallery below, so
+   the slider can be retuned without touching the rules underneath.
+   `--gallery-band-height` and the other solved values are written by the JS.
+   ========================================================================== */
+
+.ldp-gallery {
+  /* ---- tunable geometry ---- */
+  --gallery-height: 450px;
+  --gallery-gap: 12px;
+  --gallery-page-gutter: var(--cx-spacing-2x); /* 16px */
+  --gallery-top-gap: var(--cx-spacing-2x); /* space above the band */
+  --gallery-inset: 12px; /* overlay controls inset from the band edge */
+  --gallery-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --gallery-duration: 420ms;
+
+  /* ---- split + crop tuning ----
+     `per-view` slides share the band equally, so a big photo and a grid are
+     interchangeable footprints and pages tile flush.
+
+     `max-height` is a hard ceiling on the band — 450, production's own height,
+     so the hero section never grows taller than it does today. That leaves the
+     band fixed, which means the big photo's aspect can only be held by
+     changing how many slides share the band: once one would be wider than
+     `max-slide-ratio`, another comes into view. `max-ratio` is the same guard
+     one level down, for grid cells.
+
+     `hero-ratio` is the aspect we aim the big photo at. It only has teeth if
+     `max-height` is raised above the base height — with both at 450 the band
+     is pinned and the ratio sawtooths between slide-count steps instead. */
+  --gallery-per-view: 2;
+  --gallery-hero-ratio: 1.56;
+  --gallery-max-height: 450px;
+  --gallery-max-slide-ratio: 2.1;
+  --gallery-max-ratio: 1.85;
+
+  /* ---- solved by js/hero-gallery.js, do not set by hand ---- */
+  --gallery-columns: 2;
+  --gallery-hero-width: 50%;
+  --gallery-group-width: 50%;
+  --gallery-cell-width: 25%;
+  --gallery-cell-height: 219px;
+
+  position: relative;
+  /* 16px above the band, matching the production section wrapper (h = 466) */
+  padding: var(--gallery-top-gap) var(--gallery-page-gutter) 0;
+  background: var(--cx-color-background);
+  user-select: none;
+}
+
+/* --- Viewport + track ----------------------------------------------------- */
+
+.ldp-gallery__viewport {
+  position: relative;
+  height: var(--gallery-band-height, var(--gallery-height));
+  overflow: hidden;
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.ldp-gallery__viewport.is-dragging {
+  cursor: grabbing;
+}
+
+.ldp-gallery__track {
+  display: flex;
+  height: 100%;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+.ldp-gallery__track.is-animating {
+  transition: transform var(--gallery-duration) var(--gallery-ease);
+}
+
+/* --- Slides --------------------------------------------------------------- */
+
+.ldp-gallery__slide {
+  flex: 0 0 auto;
+  height: 100%;
+  margin-right: var(--gallery-gap);
+}
+
+.ldp-gallery__slide:last-child {
+  margin-right: 0;
+}
+
+/* Both slide types share one footprint — that's what lets a page tile flush
+   against both edges of the band regardless of the order they appear in. */
+.ldp-gallery__slide--hero {
+  width: var(--gallery-hero-width);
+}
+
+/* `columns` × 2 photos in the same footprint as one big photo. */
+.ldp-gallery__slide--group {
+  display: grid;
+  width: var(--gallery-group-width);
+  grid-template-columns: repeat(var(--gallery-columns), var(--gallery-cell-width));
+  grid-template-rows: var(--gallery-cell-height) var(--gallery-cell-height);
+  gap: var(--gallery-gap);
+}
+
+
+/* --- Photo cells ---------------------------------------------------------- */
+
+.ldp-gallery__cell {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  background: var(--cx-color-grey20);
+  cursor: pointer;
+}
+
+.ldp-gallery__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Keeps the drag gesture from becoming a native image drag */
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+/* Hover affordance — a scrim rather than a zoom, so the crop never shifts */
+.ldp-gallery__cell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--cx-color-black);
+  opacity: 0;
+  transition: opacity 150ms ease;
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ldp-gallery__cell:hover::after {
+    opacity: 0.06;
+  }
+}
+
+.ldp-gallery__cell:focus-visible {
+  outline: 2px solid var(--cx-color-borderFocused);
+  outline-offset: -3px;
+}
+
+/* --- Overlays ------------------------------------------------------------
+   Badges and buttons live above the viewport, not inside a slide, so they
+   stay put while the track scrolls underneath — same as production.
+   ------------------------------------------------------------------------ */
+
+/* Sized to the photo band itself — not the padded section — so every offset
+   below is measured from the band's own edges. Pinning the height (rather
+   than `bottom: 0`) keeps the controls on the image in the single-image
+   variant, where a caption sits below the band. */
+.ldp-gallery__overlay {
+  position: absolute;
+  top: var(--gallery-top-gap);
+  left: calc(var(--gallery-page-gutter) + var(--gallery-inset));
+  right: calc(var(--gallery-page-gutter) + var(--gallery-inset));
+  height: var(--gallery-band-height, var(--gallery-height));
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ldp-gallery__badges {
+  position: absolute;
+  top: var(--cx-spacing-2x);
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--cx-spacing-1x);
+}
+
+.ldp-gallery__badge {
+  padding: var(--cx-spacing-half) var(--cx-spacing-1x);
+  border-radius: var(--cx-consumer-groupBorderRadius);
+  font-size: var(--cx-font-sizeBody1);
+  font-weight: var(--cx-font-weightMedium);
+  line-height: 1;
+}
+
+.ldp-gallery__badge--source {
+  background: var(--cx-color-black);
+  color: var(--cx-color-onDarkText);
+}
+
+.ldp-gallery__badge--status {
+  background: var(--cx-color-grey60);
+  color: var(--cx-color-text);
+}
+
+/* Listing-status badges use the `Listing/*` semantic colors */
+.ldp-gallery__badge--comingSoon {
+  background: var(--cx-color-listingComingSoon);
+  color: var(--cx-color-onDarkText);
+}
+
+.ldp-gallery__actions {
+  position: absolute;
+  bottom: var(--gallery-inset);
+  display: flex;
+  gap: var(--gallery-inset);
+  pointer-events: auto;
+}
+
+.ldp-gallery__actions--start {
+  left: 0;
+}
+
+.ldp-gallery__actions--end {
+  right: 0;
+}
+
+/* --- Prev / next ---------------------------------------------------------- */
+
+.ldp-gallery__nav {
+  position: absolute;
+  top: 50%;
+  width: 38px;
+  height: 38px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: var(--cx-spacing-borderWidth) solid var(--cx-color-border);
+  border-radius: 50%;
+  background: var(--cx-color-white);
+  color: var(--cx-color-text);
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background-color 120ms ease, opacity 150ms ease;
+}
+
+.ldp-gallery__nav:hover {
+  background: var(--cx-color-secondaryInteractiveHover);
+}
+
+/* Production renders the chevron at 11×11 inside the 38px button, not at
+   Flickity's default 60% — measured off the live gallery. */
+.ldp-gallery__nav-icon {
+  width: 11px;
+  height: 11px;
+  fill: var(--cx-color-grey100);
+}
+
+.ldp-gallery__nav--prev {
+  left: 0;
+}
+
+.ldp-gallery__nav--next {
+  right: 0;
+}
+
+.ldp-gallery__nav--next .ldp-gallery__nav-icon {
+  transform: rotate(180deg);
+}
+
+/* Production hides, rather than disables, the control at each end. */
+.ldp-gallery__nav[disabled] {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* --- Photo counter (mobile only, as in production) ------------------------ */
+
+.ldp-gallery__counter {
+  position: absolute;
+  bottom: var(--gallery-inset);
+  right: 0;
+  display: none;
+  padding: var(--cx-spacing-half) var(--cx-spacing-1x);
+  border-radius: var(--cx-consumer-groupBorderRadius);
+  background: rgba(0, 0, 0, 0.6);
+  color: var(--cx-color-onDarkText);
+  font-family: var(--cx-font-familyLegible);
+  font-size: var(--cx-font-sizeCaption1);
+  line-height: var(--cx-font-lineHeightCompact);
+}
+
+/* --- Responsive ----------------------------------------------------------
+   Below the tablet breakpoint the gallery collapses to one photo per view:
+   quad slides are flattened back into single photos by the JS layout rule.
+   ------------------------------------------------------------------------ */
+
+/* Band height and page gutter follow production's ladder exactly:
+     ≥1280  450 tall, 16px gutter
+     1024   450 tall, edge to edge
+     768    354 tall, edge to edge
+     <768   336 tall, edge to edge
+   The column count is solved in JS from these values. */
+@media (max-width: 1279px) {
+  .ldp-gallery {
+    --gallery-page-gutter: 0px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .ldp-gallery {
+    --gallery-height: 354px;
+  }
+}
+
+@media (max-width: 767px) {
+  .ldp-gallery {
+    --gallery-height: 336px;
+    --gallery-inset: 8px;
+    --gallery-top-gap: 0px;
+  }
+
+  .ldp-gallery__badge {
+    font-size: var(--cx-font-sizeCaption1);
+    padding: 6px;
+  }
+
+  .ldp-gallery__nav {
+    display: none;
+  }
+
+  /* Floor Plan / Street View drop away on mobile. */
+  .ldp-gallery__actions--start {
+    display: none;
+  }
+
+  .ldp-gallery__counter {
+    display: block;
+  }
+
+  .ldp-gallery__actions--end {
+    bottom: auto;
+    top: var(--cx-spacing-1x);
+  }
+}

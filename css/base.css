@@ -1,0 +1,316 @@
+/* ==========================================================================
+   Base — fonts, reset, typography primitives, shared button recipes
+   ========================================================================== */
+
+/* --- Compass typefaces (self-hosted from ucfe-assets/fonts/3.10.0) -------- */
+
+@font-face {
+  font-family: "Compass Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: fallback;
+  src: url("../assets/fonts/CompassSans-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Compass Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-display: fallback;
+  src: url("../assets/fonts/CompassSans-Medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Compass Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: fallback;
+  src: url("../assets/fonts/CompassSans-Bold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Compass Serif";
+  font-style: normal;
+  font-weight: 400;
+  font-display: fallback;
+  src: url("../assets/fonts/CompassSerif-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Compass Serif";
+  font-style: normal;
+  font-weight: 600;
+  font-display: fallback;
+  src: url("../assets/fonts/CompassSerif-SemiBold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: fallback;
+  src: url("../assets/fonts/OpenSans-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-display: fallback;
+  src: url("../assets/fonts/OpenSans-SemiBold.woff2") format("woff2");
+}
+
+/* --- Reset ---------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--cx-color-background);
+  color: var(--cx-color-text);
+  font-family: var(--cx-font-familySans);
+  font-size: var(--cx-font-sizeBody1);
+  font-weight: var(--cx-font-weightRegular);
+  line-height: var(--cx-font-lineHeightBody);
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure {
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--cx-color-borderFocused);
+  outline-offset: 2px;
+}
+
+/* --- Typography scale (Figma `Typographic Tokens`) ------------------------ */
+
+.cx-h2 {
+  font-size: var(--cx-font-sizeHeader2);
+  font-weight: var(--cx-font-weightMedium);
+  line-height: var(--cx-font-lineHeightCompact);
+}
+.cx-h4 {
+  font-size: var(--cx-font-sizeHeader4);
+  font-weight: var(--cx-font-weightMedium);
+  line-height: var(--cx-font-lineHeightCompact);
+}
+.cx-header3 {
+  font-size: var(--cx-font-sizeHeader3);
+  font-weight: var(--cx-font-weightMedium);
+  line-height: var(--cx-font-lineHeightCompact);
+}
+.cx-subheader2-medium {
+  font-size: var(--cx-font-sizeSubheader2);
+  font-weight: var(--cx-font-weightMedium);
+  line-height: var(--cx-font-lineHeightBody);
+}
+.cx-body1 {
+  font-size: var(--cx-font-sizeBody1);
+  line-height: var(--cx-font-lineHeightBody);
+}
+.cx-body1-medium {
+  font-size: var(--cx-font-sizeBody1);
+  font-weight: var(--cx-font-weightMedium);
+  line-height: var(--cx-font-lineHeightBody);
+}
+.cx-body2 {
+  font-size: var(--cx-font-sizeBody2);
+  line-height: var(--cx-font-lineHeightBody);
+}
+.cx-body2-medium {
+  font-size: var(--cx-font-sizeBody2);
+  font-weight: var(--cx-font-weightMedium);
+  line-height: var(--cx-font-lineHeightBody);
+}
+.cx-caption1 {
+  font-family: var(--cx-font-familyLegible);
+  font-size: var(--cx-font-sizeCaption1);
+  line-height: var(--cx-font-lineHeightCompact);
+}
+.cx-caption1-semibold {
+  font-family: var(--cx-font-familyLegible);
+  font-size: var(--cx-font-sizeCaption1);
+  font-weight: var(--cx-font-weightSemiBold);
+  line-height: var(--cx-font-lineHeightCompact);
+}
+
+.cx-text-subtle {
+  color: var(--cx-color-textSubtle);
+}
+
+/* --- Text link (DS `Text link` component) --------------------------------- */
+
+.cx-link {
+  color: var(--cx-color-secondaryLink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  cursor: pointer;
+}
+.cx-link:hover {
+  color: var(--cx-color-secondaryLinkHover);
+}
+
+/* --- Buttons (DS `Buttons`, Light Consumer mode) -------------------------- */
+
+.cx-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--cx-spacing-1x);
+  border: var(--cx-spacing-borderWidth) solid transparent;
+  border-radius: var(--cx-consumer-buttonBorderRadius);
+  cursor: pointer;
+  font-family: var(--cx-font-familySans);
+  font-weight: var(--cx-font-weightMedium);
+  text-decoration: none;
+  transition: background-color 120ms ease, border-color 120ms ease,
+    color 120ms ease;
+  white-space: nowrap;
+}
+
+.cx-btn--md {
+  height: 36px;
+  padding: 0 var(--cx-spacing-2x);
+  font-size: var(--cx-font-sizeBody2);
+  line-height: 1.3;
+}
+
+.cx-btn--lg {
+  height: 48px;
+  padding: 0 var(--cx-spacing-3x);
+  font-size: var(--cx-font-sizeBody1);
+  line-height: 1.3;
+}
+
+/* Fully-round enclosed button (Save / Share in the sticky nav) */
+.cx-btn--pill {
+  height: 39px;
+  padding: var(--cx-spacing-1x) var(--cx-spacing-2x);
+  border-radius: 9999px;
+  font-size: var(--cx-font-sizeBody1);
+  line-height: 20.8px;
+}
+
+/* Solid — Light Consumer resolves Interactive/Primary to black */
+.cx-btn--solid {
+  background: var(--cx-consumer-interactive);
+  border-color: var(--cx-consumer-interactive);
+  color: var(--cx-color-onDarkText);
+}
+.cx-btn--solid:hover {
+  background: var(--cx-consumer-interactiveHover);
+  border-color: var(--cx-consumer-interactiveHover);
+}
+.cx-btn--solid:active {
+  background: var(--cx-consumer-interactiveActive);
+  border-color: var(--cx-consumer-interactiveActive);
+}
+
+/* Enclosed */
+.cx-btn--enclosed {
+  background: var(--cx-color-tertiaryInteractive);
+  border-color: var(--cx-consumer-borderInteractive);
+  color: var(--cx-color-text);
+}
+.cx-btn--enclosed:hover {
+  background: var(--cx-color-secondaryInteractiveHover);
+}
+.cx-btn--enclosed:active {
+  background: var(--cx-color-secondaryInteractiveActive);
+}
+
+/* --- Icons ---------------------------------------------------------------
+   Real cx-icons are solid single-path glyphs, so `fill: currentColor` is the
+   default. `.cx-icon--stroke` is for the few line icons drawn locally.
+   ------------------------------------------------------------------------ */
+
+.cx-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.cx-icon {
+  display: block;
+  flex: none;
+  fill: currentColor;
+  stroke: none;
+}
+
+.cx-icon--stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* --- Layout --------------------------------------------------------------- */
+
+/* Production LDP content container (`app__StyledMain`) — fluid, not fixed.
+   Measured across viewports:
+
+     viewport   1024   1200   1280   1440   1600   1920   2400
+     container  1024   1170   1170   1170   1280   1536   1536
+
+   i.e. 80% of the viewport, floored at 1170 and capped at 1536, and never
+   wider than the viewport itself. It starts growing past 1170 at ~1463px
+   (1170 / 0.8) and stops at 1920. Padding is a constant 24px each side, so
+   the inner content box is 1122 at 1440 and 1488 at 1920. */
+.ldp-container {
+  width: clamp(1170px, 80%, 1536px);
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--cx-spacing-3x);
+}
+
+@media (max-width: 768px) {
+  .ldp-container {
+    width: 100%;
+    padding: 0 var(--cx-spacing-2x);
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

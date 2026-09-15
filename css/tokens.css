@@ -1,0 +1,329 @@
+/* ==========================================================================
+   Compass Design System — token layer
+   --------------------------------------------------------------------------
+   Mirrors @uc/cx-design-tokens (the `--cx-*` custom properties shipped via
+   https://www.compass.com/ucfe-assets/cx/4/cx.min.css) so this prototype runs
+   offline with the real values.
+
+   Sources:
+     • compass-ds-extraction.md      → Section 1 (code tokens, Storybook + cx-design-tokens)
+     • compass-ds-figma-extraction.md → Sections 1–2 (Figma primitives + semantic tokens)
+
+   Layering, same as the DS itself:
+     1. Primitives  — raw ramp values (--cx-color-grey40)
+     2. Semantics   — role-based aliases (--cx-color-border)
+     3. Typography  — the Figma `Typographic Tokens` scale, desktop + mobile modes
+   ========================================================================== */
+
+:root {
+  /* ---------------------------------------------------------------------
+     1. PRIMITIVES — Full color palette
+     --------------------------------------------------------------------- */
+
+  /* Neutrals */
+  --cx-color-white: #ffffff;
+  --cx-color-grey10: #fafafa;
+  --cx-color-grey20: #f4f4f4;
+  --cx-color-grey30: #e8e8e8;
+  --cx-color-grey40: #dadada;
+  --cx-color-grey50: #c9c9c9;
+  --cx-color-grey60: #adadad;
+  --cx-color-grey70: #8d8d8d;
+  --cx-color-grey80: #6c6c6c;
+  --cx-color-grey90: #4e4e4e;
+  --cx-color-grey100: #333333;
+  --cx-color-grey110: #242424;
+  --cx-color-grey120: #171717;
+  --cx-color-black: #000000;
+
+  /* Primary (Blue) */
+  --cx-color-blue10: #fafcff;
+  --cx-color-blue20: #f0f6ff;
+  --cx-color-blue30: #e5f1ff;
+  --cx-color-blue40: #d1e5ff;
+  --cx-color-blue50: #a8ceff;
+  --cx-color-blue60: #70aeff;
+  --cx-color-blue70: #2986ff;
+  --cx-color-blue80: #0064e5;
+  --cx-color-blue90: #0049a8;
+  --cx-color-blue100: #003375;
+  --cx-color-blue110: #00214c;
+  --cx-color-blue120: #001838;
+
+  /* Functional — Red */
+  --cx-color-red20: #faeff0;
+  --cx-color-red30: #f8e3e4;
+  --cx-color-red40: #f2cccf;
+  --cx-color-red50: #e7a2a8;
+  --cx-color-red60: #d96d76;
+  --cx-color-red70: #c72f2f;
+  --cx-color-red80: #ae0917;
+  --cx-color-red90: #800707;
+  --cx-color-red100: #590505;
+
+  /* Functional — Yellow */
+  --cx-color-yellow20: #fffdf8;
+  --cx-color-yellow30: #fffaed;
+  --cx-color-yellow40: #fff7df;
+  --cx-color-yellow50: #ffefc0;
+  --cx-color-yellow60: #ffe493;
+  --cx-color-yellow70: #facf4e;
+  --cx-color-yellow80: #ffbf00;
+  --cx-color-yellow90: #c29100;
+  --cx-color-yellow100: #8f6b00;
+
+  /* Functional — Green */
+  --cx-color-green30: #ecf9f2;
+  --cx-color-green40: #ddf3e7;
+  --cx-color-green50: #bee9d2;
+  --cx-color-green60: #94dbb5;
+  --cx-color-green70: #5eca90;
+  --cx-color-green80: #3aac6f;
+  --cx-color-green90: #2a7e51;
+  --cx-color-green100: #1e5839;
+
+  /* Functional — Orange */
+  --cx-color-orange20: #fef9f6;
+  --cx-color-orange30: #fdf1e7;
+  --cx-color-orange40: #fbe6d6;
+  --cx-color-orange50: #f7cfb0;
+  --cx-color-orange60: #f2b07d;
+  --cx-color-orange70: #ed883b;
+  --cx-color-orange80: #d16614;
+  --cx-color-orange90: #9a4b0f;
+  --cx-color-orange100: #6b340a;
+
+  /* Functional — Purple */
+  --cx-color-purple30: #e9e6f5;
+  --cx-color-purple40: #dbd5f0;
+  --cx-color-purple50: #bbb1e0;
+  --cx-color-purple60: #9688ce;
+  --cx-color-purple70: #5743ab;
+  --cx-color-purple80: #402a96;
+  --cx-color-purple90: #2f206b;
+  --cx-color-purple100: #180c4a;
+
+  /* Functional — Teal */
+  --cx-color-teal30: #ddf7f9;
+  --cx-color-teal40: #c5f4f7;
+  --cx-color-teal50: #aaeff3;
+  --cx-color-teal60: #7ce2e9;
+  --cx-color-teal70: #3fd4de;
+  --cx-color-teal80: #18bec9;
+  --cx-color-teal90: #14a4ad;
+  --cx-color-teal100: #037a82;
+
+  /* Functional — Violet */
+  --cx-color-violet30: #f2cffc;
+  --cx-color-violet40: #e8b6f7;
+  --cx-color-violet50: #d591e8;
+  --cx-color-violet60: #c666e1;
+  --cx-color-violet70: #b243d0;
+  --cx-color-violet80: #a120c5;
+  --cx-color-violet90: #7d199a;
+  --cx-color-violet100: #64057f;
+
+  /* ---------------------------------------------------------------------
+     2. SEMANTIC COLORS
+     --------------------------------------------------------------------- */
+
+  /* Text */
+  --cx-color-text: #171717;
+  --cx-color-textSubtle: #6c6c6c;
+  --cx-color-textDisabled: #8d8d8d;
+  --cx-color-selectedText: #171717;
+
+  /* Links */
+  --cx-color-link: #0064e5;
+  --cx-color-linkHover: #0064e5;
+  --cx-color-linkActive: #0064e5;
+  --cx-color-linkDisabled: #70aeff;
+  --cx-color-secondaryLink: #171717;
+  --cx-color-secondaryLinkHover: #4e4e4e;
+  --cx-color-secondaryLinkActive: #4e4e4e;
+  --cx-color-secondaryLinkDisabled: #adadad;
+  --cx-color-tertiaryLink: #6c6c6c;
+  --cx-color-tertiaryLinkHover: #4e4e4e;
+  --cx-color-tertiaryLinkActive: #4e4e4e;
+
+  /* Interactive */
+  --cx-color-interactive: #0064e5;
+  --cx-color-interactiveHover: #0049a8;
+  --cx-color-interactiveActive: #003375;
+  --cx-color-interactiveDisabled: #dadada;
+  --cx-color-interactiveFocused: #0064e5;
+  --cx-color-tertiaryInteractive: #ffffff;
+  --cx-color-secondaryInteractiveHover: #f4f4f4;
+  --cx-color-secondaryInteractiveActive: #dadada;
+
+  /* Selection */
+  --cx-color-selectable: #f4f4f4;
+  --cx-color-selectableHover: #dadada;
+  --cx-color-selectableActive: #c9c9c9;
+  --cx-color-selectableDisabled: #fafafa;
+  --cx-color-selectedBackground: #f0f6ff;
+  --cx-color-selectedBackgroundHover: #d1e5ff;
+  --cx-color-selectedBackgroundActive: #a8ceff;
+
+  /* Surfaces */
+  --cx-color-background: #ffffff;
+  --cx-color-backgroundAccent: #f4f4f4;
+  --cx-color-backgroundDark: #000000;
+
+  /* Borders */
+  --cx-color-border: #dadada;
+  --cx-color-borderDisabled: #e8e8e8;
+  --cx-color-borderInteractive: #dadada;
+  --cx-color-borderActive: #dadada;
+  --cx-color-borderFocused: #2986ff;
+
+  /* Shadows / scrims */
+  --cx-color-dropShadow: rgba(0, 0, 0, 0.1);
+  --cx-color-innerShadow: rgba(0, 0, 0, 0.2);
+  --cx-color-lightBackdrop: rgba(255, 255, 255, 0.75);
+  --cx-color-darkBackdrop: rgba(0, 0, 0, 0.25);
+
+  /* Status */
+  --cx-color-critical: #ae0917;
+  --cx-color-criticalHover: #800707;
+  --cx-color-criticalActive: #590505;
+  --cx-color-criticalDisabled: #f2cccf;
+  --cx-color-faintCritical: #f8e3e4;
+  --cx-color-highlight: #ffbf00;
+  --cx-color-faintHighlight: #fff7df;
+  --cx-color-success: #3aac6f;
+  --cx-color-successBackground: #5eca90;
+  --cx-color-faintSuccess: #ddf3e7;
+
+  /* Listing status */
+  --cx-color-listingActive: #2a7e51;
+  --cx-color-listingComingSoon: #5743ab;
+  --cx-color-listingExclusive: #171717;
+  --cx-color-listingOffMarket: #6c6c6c;
+  --cx-color-listingOffMarketFaint: #adadad;
+  --cx-color-listingOffMarketSecondary: #dadada;
+  --cx-color-listingOpenHouse: #0049a8;
+  --cx-color-listingPending: #d16614;
+  --cx-color-listingPriceChange: #ffefc0;
+  --cx-color-listingSold: #c72f2f;
+  --cx-color-listingSoldFaint: #f2cccf;
+  --cx-color-listingVirtualTour: #7ce2e9;
+
+  /* On-dark */
+  --cx-color-onDarkText: #ffffff;
+  --cx-color-onDarkTextSubtle: #c9c9c9;
+  --cx-color-onDarkTextDisabled: #adadad;
+
+  /* ---------------------------------------------------------------------
+     3. TYPOGRAPHY
+     --------------------------------------------------------------------- */
+
+  --cx-font-familySans: "Compass Sans", Helvetica, Arial, sans-serif;
+  --cx-font-familySerif: "Compass Serif", Times, "Times New Roman", serif;
+  --cx-font-familyLegible: "Open Sans", Helvetica, Arial, sans-serif;
+  --cx-font-familyMono: Consolas, "Fira Code", Menlo, monospace;
+
+  --cx-font-weightRegular: 400;
+  --cx-font-weightMedium: 500;
+  --cx-font-weightSemiBold: 600;
+  --cx-font-weightBold: 700;
+
+  --cx-font-lineHeightBody: 1.5;
+  --cx-font-lineHeightCompact: 1.3;
+
+  /* Desktop Compass mode (Figma `Typographic Tokens`) */
+  --cx-font-sizeTitle1: 50px;
+  --cx-font-sizeTitle2: 42px;
+  --cx-font-sizeHeader1: 36px;
+  --cx-font-sizeHeader2: 32px;
+  --cx-font-sizeHeader3: 28px;
+  --cx-font-sizeHeader4: 24px;
+  --cx-font-sizeSubheader1: 20px;
+  --cx-font-sizeSubheader2: 18px;
+  --cx-font-sizeBody1: 16px;
+  --cx-font-sizeBody2: 14px;
+  --cx-font-sizeCallout: 14px;
+  --cx-font-sizeCaption1: 12px;
+  --cx-font-sizeCaption2: 10px;
+
+  /* ---------------------------------------------------------------------
+     4. SPACING & SHAPE
+     --------------------------------------------------------------------- */
+
+  --cx-spacing-half: 4px;
+  --cx-spacing-1x: 8px;
+  --cx-spacing-2x: 16px;
+  --cx-spacing-3x: 24px;
+  --cx-spacing-4x: 32px;
+  --cx-spacing-8x: 64px;
+
+  --cx-spacing-gutterMobile: 16px;
+  --cx-spacing-gutter: 24px;
+  --cx-spacing-borderWidth: 1px;
+  --cx-spacing-borderRadius: 2px;
+  --cx-spacing-buttonBorderRadius: 2px;
+  --cx-spacing-elevatedBorderRadius: 0;
+  --cx-spacing-linkAffordance: 0;
+
+  /* ---------------------------------------------------------------------
+     5. ELEVATION
+     --------------------------------------------------------------------- */
+
+  --cx-elevation-0dp: none;
+  --cx-elevation-1dp:
+    0 3px 4px -1px rgba(0, 0, 0, 0.1), 0 2px 1px 0 rgba(0, 0, 0, 0.14),
+    0 -1px 1px 0 rgba(0, 0, 0, 0.06);
+  --cx-elevation-2dp:
+    0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px 0 rgba(0, 0, 0, 0.12),
+    0 1px 5px 0 rgba(0, 0, 0, 0.2);
+  --cx-elevation-4dp:
+    0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14),
+    0 1px 10px 0 rgba(0, 0, 0, 0.12);
+  --cx-elevation-4dp-up:
+    0 -2px 4px -1px rgba(0, 0, 0, 0.2), 0 -4px 5px 0 rgba(0, 0, 0, 0.14),
+    0 -1px 10px 0 rgba(0, 0, 0, 0.12);
+  --cx-elevation-6dp:
+    0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14),
+    0 1px 18px 0 rgba(0, 0, 0, 0.12);
+  --cx-elevation-8dp:
+    0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  --cx-elevation-16dp:
+    0 8px 10px -5px rgba(0, 0, 0, 0.2), 0 16px 24px 2px rgba(0, 0, 0, 0.14),
+    0 6px 30px 5px rgba(0, 0, 0, 0.12);
+  --cx-elevation-24dp:
+    0 11px 15px -7px rgba(0, 0, 0, 0.2), 0 24px 38px 3px rgba(0, 0, 0, 0.14),
+    0 9px 46px 8px rgba(0, 0, 0, 0.12);
+
+  /* ---------------------------------------------------------------------
+     6. CONSUMER-SURFACE OVERRIDES
+     --------------------------------------------------------------------------
+     The Figma `Themes` collection has two modes — Light Agent and Light
+     Consumer — that diverge on interactive colors and button radius
+     (compass-ds-figma-extraction.md §2b). compass.com/homedetails is a
+     consumer surface, so this page runs the Consumer mode: interactive black
+     rather than blue, pill buttons rather than 2px radius.
+     --------------------------------------------------------------------- */
+
+  --cx-consumer-interactive: var(--cx-color-black);
+  --cx-consumer-interactiveHover: var(--cx-color-grey110);
+  --cx-consumer-interactiveActive: var(--cx-color-grey100);
+  --cx-consumer-borderInteractive: var(--cx-color-grey60);
+  --cx-consumer-buttonBorderRadius: 30px;
+  --cx-consumer-groupBorderRadius: 4px;
+}
+
+/* Mobile Compass typography mode — Figma `Typographic Tokens`, Mobile mode */
+@media (max-width: 767px) {
+  :root {
+    --cx-font-sizeTitle1: 42px;
+    --cx-font-sizeTitle2: 36px;
+    --cx-font-sizeHeader1: 32px;
+    --cx-font-sizeHeader2: 28px;
+    --cx-font-sizeHeader3: 24px;
+    --cx-font-sizeHeader4: 20px;
+    --cx-font-sizeSubheader1: 18px;
+    --cx-font-sizeSubheader2: 16px;
+    --cx-font-sizeBody1: 14px;
+  }
+}
