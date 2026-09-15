@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" width="640" height="300" role="img" aria-label="Map of Moss Bay, Kirkland">
+  <defs>
+    <style>
+      .land { fill: #f4f2ee; }
+      .water { fill: #cfe2ee; }
+      .park { fill: #d9e8d1; }
+      .road { stroke: #ffffff; stroke-linecap: square; }
+      .road--minor { stroke-width: 3; }
+      .road--major { stroke-width: 6; }
+      .label { font: 400 9px "Open Sans", Helvetica, Arial, sans-serif; fill: #8d8d8d; }
+      .label--area { font: 600 11px "Open Sans", Helvetica, Arial, sans-serif; fill: #6c6c6c; letter-spacing: .08em; }
+    </style>
+  </defs>
+
+  <rect class="land" width="640" height="300"/>
+
+  <!-- Lake Washington along the west edge -->
+  <path class="water" d="M0 0h176q-28 60-4 108 26 50-6 96-24 36-10 96H0z"/>
+  <rect class="park" x="470" y="180" width="120" height="72"/>
+  <rect class="park" x="210" y="34" width="72" height="46"/>
+
+  <g class="road road--major">
+    <path d="M250 0V300M330 0V300M410 0V300M490 0V300M570 0V300"/>
+  </g>
+  <g class="road road--minor">
+    <path d="M182 32H640M186 68H640M190 104H640M194 140H640M198 176H640M202 212H640M206 248H640M210 284H640"/>
+  </g>
+
+  <text class="label--area" x="300" y="96">MOSS BAY</text>
+  <text class="label" x="18" y="20">Lake Washington</text>
+  <text class="label" x="212" y="130">Lake St S</text>
+  <text class="label" x="340" y="166">State St S</text>
+  <text class="label" x="496" y="244">Peter Kirk Park</text>
+  <text class="label" x="424" y="62">Kirkland Ave</text>
+</svg>

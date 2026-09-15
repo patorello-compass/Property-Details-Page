@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" width="640" height="300" role="img" aria-label="Map of Lenox Hill, Manhattan">
+  <defs>
+    <style>
+      .land { fill: #f4f2ee; }
+      .park { fill: #d9e8d1; }
+      .water { fill: #cfe2ee; }
+      .road { stroke: #ffffff; stroke-linecap: square; }
+      .road--minor { stroke-width: 3; }
+      .road--major { stroke-width: 6; }
+      .label { font: 400 9px "Open Sans", Helvetica, Arial, sans-serif; fill: #8d8d8d; }
+      .label--area { font: 600 11px "Open Sans", Helvetica, Arial, sans-serif; fill: #6c6c6c; letter-spacing: .08em; }
+    </style>
+  </defs>
+
+  <rect class="land" width="640" height="300"/>
+
+  <!-- Central Park edge + East River -->
+  <rect class="park" x="0" y="0" width="96" height="300"/>
+  <rect class="water" x="586" y="0" width="54" height="300"/>
+  <path class="water" d="M586 0 q-22 80 0 160 q-18 80 0 140 h54 V0z"/>
+
+  <!-- avenue grid (vertical) -->
+  <g class="road road--major">
+    <path d="M132 0V300M212 0V300M292 0V300M372 0V300M452 0V300M532 0V300"/>
+  </g>
+  <!-- street grid (horizontal) -->
+  <g class="road road--minor">
+    <path d="M96 28H586M96 60H586M96 92H586M96 124H586M96 156H586M96 188H586M96 220H586M96 252H586M96 284H586"/>
+  </g>
+
+  <!-- park paths -->
+  <g stroke="#c2d9b6" stroke-width="2" fill="none">
+    <path d="M10 40q40 40 76 20M6 140q46-24 84 10M14 230q38-30 74-4"/>
+  </g>
+
+  <text class="label--area" x="300" y="80">LENOX HILL</text>
+  <text class="label" x="18" y="20">Central Park</text>
+  <text class="label" x="140" y="118">E 63rd St</text>
+  <text class="label" x="140" y="150">E 62nd St</text>
+  <text class="label" x="220" y="86">E 65th St</text>
+  <text class="label" x="460" y="182">York Ave</text>
+  <text class="label" x="596" y="150">East River</text>
+</svg>

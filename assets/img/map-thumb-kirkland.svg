@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="Map thumbnail">
+  <defs>
+    <style>
+      .land { fill: #f4f2ee; }
+      .water { fill: #cfe2ee; }
+      .park { fill: #d9e8d1; }
+      .road { stroke: #ffffff; stroke-linecap: square; }
+      .label { font: 600 7px "Open Sans", Helvetica, Arial, sans-serif; fill: #8d8d8d; letter-spacing: .06em; }
+    </style>
+  </defs>
+
+  <rect class="land" width="160" height="160"/>
+  <path class="water" d="M0 0h46q-10 40 4 80 14 40 2 80H0z"/>
+  <rect class="park" x="120" y="96" width="40" height="34"/>
+
+  <g class="road" stroke-width="4">
+    <path d="M72 0V160M112 0V160"/>
+  </g>
+  <g class="road" stroke-width="2">
+    <path d="M50 26H160M52 56H160M54 86H160M56 116H160M58 146H160"/>
+  </g>
+
+  <text class="label" x="6" y="14">LAKE WASHINGTON</text>
+  <text class="label" x="78" y="46">MOSS BAY</text>
+
+  <!-- listing pin -->
+  <g transform="translate(80 84)">
+    <path d="M0 16c6-8 9-12 9-17a9 9 0 10-18 0c0 5 3 9 9 17z" fill="#171717"/>
+    <circle cx="0" cy="-1.5" r="3.2" fill="#ffffff"/>
+  </g>
+</svg>

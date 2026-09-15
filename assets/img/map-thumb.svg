@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="Map thumbnail">
+  <defs>
+    <style>
+      .land { fill: #f4f2ee; }
+      .park { fill: #d9e8d1; }
+      .road { stroke: #ffffff; stroke-linecap: square; }
+      .label { font: 600 7px "Open Sans", Helvetica, Arial, sans-serif; fill: #8d8d8d; letter-spacing: .06em; }
+    </style>
+  </defs>
+
+  <rect class="land" width="160" height="160"/>
+  <rect class="park" x="0" y="0" width="34" height="160"/>
+
+  <g class="road" stroke-width="4">
+    <path d="M54 0V160M94 0V160M134 0V160"/>
+  </g>
+  <g class="road" stroke-width="2">
+    <path d="M34 20H160M34 44H160M34 68H160M34 92H160M34 116H160M34 140H160"/>
+  </g>
+
+  <text class="label" x="4" y="14">CENTRAL PARK</text>
+  <text class="label" x="70" y="40">LENOX HILL</text>
+
+  <!-- listing pin -->
+  <g transform="translate(80 84)">
+    <path d="M0 16c6-8 9-12 9-17a9 9 0 10-18 0c0 5 3 9 9 17z" fill="#171717"/>
+    <circle cx="0" cy="-1.5" r="3.2" fill="#ffffff"/>
+  </g>
+</svg>
