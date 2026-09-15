@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>807 Lake St S, Unit 301 — Compass LDP rebuild (single image)</title>
+
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/hero-photo.css" />
+    <link rel="stylesheet" href="css/page.css" />
+  </head>
+
+  <body>
+    <!-- ==========================================================
+         Icon sprite — the Compass logotype plus the subset of
+         cx-icons (ucfe-assets/cx-icons/7/cx-icons.cdn.svg) this page
+         uses. Inlined rather than referenced as an external file
+         because Chrome does not resolve <use href="file.svg#id">.
+         ========================================================== -->
+    <svg class="cx-sprite" aria-hidden="true" focusable="false">
+      <symbol id="cx-logo-compass" viewBox="0 0 112 16">
+        <path
+          d="M53,.457,45,11.314,37,.457V15h2V6.543l6,8.143,6-8.143V15h2ZM60,15H58V1h6.5a4.5,4.5,0,0,1,0,9H60Zm0-7h4.5a2.5,2.5,0,0,0,0-5H60Zm22.863,7h2.275L77.5.9,69.863,15h2.275l1.625-3h7.475Zm-8.018-5L77.5,5.1,80.155,10ZM97,11.085c0,2.371-2.175,4.16-5.06,4.16a6.494,6.494,0,0,1-4.878-2.355l1.41-1.375A4.494,4.494,0,0,0,91.94,13.29c1.8,0,3.06-.906,3.06-2.2,0-1.11-.756-1.856-2.31-2.283L91,8.42c-3.6-.884-3.6-3.043-3.6-3.753,0-2.232,1.8-3.732,4.485-3.732a6.1,6.1,0,0,1,4.581,2.05l-1.41,1.378a4.629,4.629,0,0,0-3.171-1.472c-1.579,0-2.485.647-2.485,1.777,0,.337.128,1.462,1.773,1.816l1.533.345C95.516,7.487,97,8.96,97,11.085Zm14,0c0,2.371-2.175,4.16-5.06,4.16a6.494,6.494,0,0,1-4.878-2.355l1.41-1.375a4.494,4.494,0,0,0,3.468,1.775c1.8,0,3.06-.906,3.06-2.2,0-1.11-.756-1.856-2.31-2.283L105,8.42c-3.6-.884-3.6-3.043-3.6-3.753,0-2.232,1.8-3.732,4.485-3.732a6.1,6.1,0,0,1,4.581,2.05l-1.41,1.378a4.629,4.629,0,0,0-3.171-1.472c-1.579,0-2.485.647-2.485,1.777,0,.337.128,1.462,1.773,1.816l1.533.345C109.516,7.487,111,8.96,111,11.085Zm-98.611.8h0a5.5,5.5,0,1,1,0-7.778h0l.354.354L14.157,3.05,13.8,2.7h0a7.5,7.5,0,1,0,0,10.607l0,0h0l.354-.353-1.414-1.415ZM25.5.5A7.5,7.5,0,1,0,33,8,7.5,7.5,0,0,0,25.5.5Zm0,13A5.5,5.5,0,1,1,31,8,5.5,5.5,0,0,1,25.5,13.5Zm3.207-7.293L27.293,4.793l-5,5,1.414,1.414Z"
+        />
+      </symbol>
+
+      <symbol id="cx-icon-magnifyingGlass" viewBox="0 0 16 16">
+        <path
+          d="M6.618 1A5.624 5.624 0 0 0 1 6.618a5.624 5.624 0 0 0 5.618 5.617c1.18 0 2.275-.368 3.18-.993L13.556 15 15 13.556l-3.758-3.758c.625-.905.993-2 .993-3.18A5.624 5.624 0 0 0 6.618 1Zm0 2.043a3.579 3.579 0 0 1 3.574 3.575 3.579 3.579 0 0 1-3.574 3.574 3.579 3.579 0 0 1-3.575-3.574 3.579 3.579 0 0 1 3.575-3.575Z"
+        />
+      </symbol>
+      <symbol id="cx-icon-chevronDown" viewBox="0 0 16 16">
+        <path d="M8 11.914 2.293 6.207l1.414-1.414L8 9.086l4.293-4.293 1.414 1.414L8 11.914z" />
+      </symbol>
+      <symbol id="cx-icon-chevronLeft" viewBox="0 0 16 16">
+        <path d="M9.793 13.707 4.086 8l5.707-5.707 1.414 1.414L6.914 8l4.293 4.293-1.414 1.414z" />
+      </symbol>
+      <symbol id="cx-icon-starOutlined" viewBox="0 0 16 16">
+        <path
+          d="m16 6.176-5.752-.5L8 .332l-2.248 5.35L0 6.177l4.368 3.817-1.312 5.673L8 12.656l4.944 3.01-1.304-5.673L16 6.176Zm-8 4.971-3.008 1.832.8-3.454L3.136 7.2l3.504-.307L8 3.642l1.368 3.26 3.504.307-2.656 2.324.8 3.454L8 11.147Z"
+        />
+      </symbol>
+      <symbol id="cx-icon-arrowRightInRectangle" viewBox="0 0 16 16">
+        <path
+          d="M10 14H1V2h9v2H3v8h7Zm1.707-9.707-1.414 1.414L11.586 7H5v2h6.586l-1.293 1.293 1.414 1.414L15.414 8Z"
+        />
+      </symbol>
+      <symbol id="cx-icon-squaresInThreeRows" viewBox="0 0 16 16">
+        <path
+          d="M10 9H7V6h3ZM5 6H2v3h3Zm0-5H2v3h3Zm5 0H7v3h3Zm5 0h-3v3h3Zm0 5h-3v3h3Zm-5 5H7v3h3Zm-5 0H2v3h3Zm10 0h-3v3h3Z"
+        />
+      </symbol>
+      <symbol id="cx-icon-plus" viewBox="0 0 16 16">
+        <path d="M14 7H9V2H7v5H2v2h5v5h2V9h5V7z" />
+      </symbol>
+
+      <!-- Flickity's own chevron, as used by the production gallery -->
+      <symbol id="gallery-arrow" viewBox="0 0 100 100">
+        <path d="M 19.14,50 L 69.14,100 L 80.86,88.25 L 42.72,50 L 80.86,11.75 L 69.14,0 Z" />
+      </symbol>
+    </svg>
+
+    <!-- ================= Top bar (.uc-corpNav, 48px) ================= -->
+    <nav class="ldp-topbar" aria-label="Compass">
+      <div class="ldp-topbar__header">
+        <a class="ldp-logo" href="#" aria-label="Compass">
+          <svg class="ldp-logo__mark" width="112" height="16" role="img">
+            <title>Compass</title>
+            <use href="#cx-logo-compass"></use>
+          </svg>
+        </a>
+
+        <form class="ldp-search" role="search" onsubmit="return false">
+          <div class="ldp-search__field">
+            <input
+              class="ldp-search__input"
+              type="text"
+              placeholder="City, Neighborhood, Address, School, ZIP, Agent, ID"
+              aria-label="Search listings"
+            />
+          </div>
+          <button class="ldp-search__btn" type="submit" aria-label="Search">
+            <svg class="cx-icon" width="16" height="16">
+              <use href="#cx-icon-magnifyingGlass"></use>
+            </svg>
+          </button>
+        </form>
+      </div>
+
+      <div class="ldp-topbar__menu">
+        <a class="ldp-topbar__item" href="#">Buy</a>
+        <a class="ldp-topbar__item" href="#">Rent</a>
+        <a class="ldp-topbar__item" href="#">Sell</a>
+        <button class="ldp-topbar__item" type="button">
+          Compass Exclusives
+          <svg class="cx-icon ldp-topbar__caret" width="16" height="16">
+            <use href="#cx-icon-chevronDown"></use>
+          </svg>
+        </button>
+        <button class="ldp-topbar__item" type="button">
+          New Development
+          <svg class="cx-icon ldp-topbar__caret" width="16" height="16">
+            <use href="#cx-icon-chevronDown"></use>
+          </svg>
+        </button>
+        <button class="ldp-topbar__item" type="button">
+          Agents
+          <svg class="cx-icon ldp-topbar__caret" width="16" height="16">
+            <use href="#cx-icon-chevronDown"></use>
+          </svg>
+        </button>
+      </div>
+
+      <div class="ldp-topbar__user">
+        <button class="ldp-topbar__item" type="button">Register/Sign In</button>
+      </div>
+    </nav>
+
+    <!-- ================= Section nav (sticky, 58px) ================= -->
+    <div class="ldp-subnav">
+      <a class="ldp-subnav__back" href="#">
+        <svg class="cx-icon" width="16" height="16">
+          <use href="#cx-icon-chevronLeft"></use>
+        </svg>
+        Search
+      </a>
+
+      <div class="ldp-subnav__wrapper">
+        <nav class="ldp-subnav__tabs" aria-label="Page sections">
+          <a class="is-active" href="#overview">Overview</a>
+          <a href="#location">Location</a>
+          <a href="#property-info">Property Info</a>
+          <a href="#public-records">Public Records</a>
+          <a href="#schools">Schools</a>
+          <a href="#similar-homes">Similar Homes</a>
+        </nav>
+      </div>
+
+      <div class="ldp-subnav__actions">
+        <button class="cx-btn cx-btn--enclosed cx-btn--pill" type="button">
+          <svg class="cx-icon" width="16" height="16">
+            <use href="#cx-icon-starOutlined"></use>
+          </svg>
+          Save
+        </button>
+        <button class="cx-btn cx-btn--enclosed cx-btn--pill" type="button">
+          <svg class="cx-icon" width="16" height="16">
+            <use href="#cx-icon-arrowRightInRectangle"></use>
+          </svg>
+          Share
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= Hero photo =================
+         A one-photo listing is a plain image, not a carousel — its own
+         component, with no slider machinery behind it. -->
+    <section class="ldp-hero-photo" aria-label="Property photo">
+      <figure class="ldp-hero-photo__frame">
+        <div class="ldp-hero-photo__media">
+          <img class="ldp-hero-photo__img" id="hero-photo" src="" alt="" />
+
+          <!-- Badges ride with the photo -->
+          <div
+            class="ldp-hero-photo__badges"
+            id="hero-badges"
+            data-badge-class="ldp-hero-photo__badge"
+          ></div>
+        </div>
+
+        <!-- …the button stays anchored to the frame's bottom-left -->
+        <div class="ldp-hero-photo__actions">
+          <button class="cx-btn cx-btn--enclosed cx-btn--md" type="button">
+            Street View
+          </button>
+        </div>
+      </figure>
+
+      <p class="ldp-hero-photo__caption" id="hero-caption"></p>
+    </section>
+
+    <!-- ================= Body ================= -->
+    <main class="ldp-container ldp-layout" id="overview">
+      <!-- ---------- Left column ---------- -->
+      <div class="ldp-main">
+        <!-- Summary — content column plus the 120px map thumbnail that sits
+             at its right edge (production puts the map here, not in the
+             sidebar) -->
+        <section class="ldp-summary">
+          <div class="ldp-summary__main">
+            <p class="ldp-status">
+              <span class="ldp-status__dot"></span>
+              <span id="summary-status">Active</span>
+            </p>
+
+            <div class="ldp-price-row">
+              <span class="ldp-price" id="summary-price">$8,250,000</span>
+              <span class="ldp-price-est">
+                Est: <span id="summary-est">$42,632/mo</span>
+                <a class="cx-link" href="#">Get pre-approved</a>
+              </span>
+            </div>
+
+            <p class="ldp-specs cx-body1-medium" id="summary-specs"></p>
+
+            <p class="ldp-address cx-body1" id="summary-address"></p>
+
+            <p class="ldp-building cx-body1" id="summary-building"></p>
+          </div>
+
+          <button class="ldp-summary__map" type="button" aria-label="View on map">
+            <img id="map-thumb" src="assets/img/map-thumb.svg" alt="" />
+          </button>
+        </section>
+
+        <!-- Key facts -->
+        <ul class="ldp-facts" id="facts-grid"></ul>
+
+        <!-- Description -->
+        <section class="ldp-section">
+          <h2 class="ldp-section__title cx-h4">Description</h2>
+          <div class="ldp-description" id="description-body"></div>
+          <button class="ldp-readmore cx-body2-medium" type="button">
+            Continue Reading
+            <svg class="cx-icon" width="16" height="16">
+              <use href="#cx-icon-chevronDown"></use>
+            </svg>
+          </button>
+
+          <!-- Attribution line, for listings that have no agent cards -->
+          <p class="ldp-listed-by cx-body2" id="listed-by"></p>
+        </section>
+
+        <!-- Listing agents — removed by page.js when the fixture has none -->
+        <section class="ldp-section">
+          <h2 class="ldp-section__title cx-h4">Listing Agents</h2>
+          <ul class="ldp-agents" id="agents-list"></ul>
+        </section>
+
+        <div class="ldp-meta">
+          <p class="cx-body2" id="meta-days-row">
+            <strong id="meta-days">88 days</strong> on Market
+          </p>
+          <p class="cx-caption1 cx-text-subtle" id="meta-source"></p>
+        </div>
+
+        <!-- Location -->
+        <section class="ldp-section" id="location">
+          <h2 class="ldp-section__title cx-h4">Location</h2>
+          <nav class="ldp-breadcrumbs cx-caption1" id="breadcrumbs"></nav>
+
+          <figure class="ldp-map">
+            <img id="map-wide" src="assets/img/map-wide.svg" alt="Map of the listing" />
+            <span class="ldp-map__marker" aria-hidden="true">
+              <svg width="28" height="34" viewBox="0 0 28 34">
+                <path
+                  d="M14 33c9-12 12-17 12-22A12 12 0 1 0 2 11c0 5 3 10 12 22z"
+                  fill="var(--cx-color-black)"
+                />
+                <circle cx="14" cy="11" r="4.5" fill="#fff" />
+              </svg>
+            </span>
+            <figcaption class="ldp-map__caption cx-caption1">
+              159 East 63rd Street, Lenox Hill, Manhattan
+            </figcaption>
+          </figure>
+
+          <button class="ldp-commute cx-body2-medium" type="button">
+            <svg class="cx-icon" width="16" height="16">
+              <use href="#cx-icon-plus"></use>
+            </svg>
+            Add your commute
+          </button>
+        </section>
+
+        <!-- Payment calculator -->
+        <section class="ldp-section">
+          <h2 class="ldp-section__title cx-h4">Payment Calculator</h2>
+          <a class="cx-link cx-body2 ldp-preapproved" href="#"
+            >Get preapproved with Rocket Mortgage<sup>1</sup></a
+          >
+
+          <div class="ldp-calc">
+            <div class="ldp-calc__summary">
+              <p class="ldp-calc__amount cx-header3" id="calc-monthly"></p>
+              <p class="cx-body2 cx-text-subtle" id="calc-terms"></p>
+              <div class="ldp-calc__bar"><span></span></div>
+            </div>
+            <ul class="ldp-calc__breakdown" id="calc-breakdown"></ul>
+          </div>
+
+          <div class="ldp-calc__fields">
+            <label class="ldp-field">
+              <span class="ldp-field__label cx-body2">Term</span>
+              <select class="ldp-field__control">
+                <option>30 Years Fixed</option>
+                <option>20 Years Fixed</option>
+                <option>15 Years Fixed</option>
+                <option>10 Years Fixed</option>
+              </select>
+            </label>
+            <label class="ldp-field">
+              <span class="ldp-field__label cx-body2">Interest</span>
+              <input class="ldp-field__control" value="6.71%" />
+            </label>
+            <label class="ldp-field">
+              <span class="ldp-field__label cx-body2">Home Price</span>
+              <input class="ldp-field__control" id="calc-price" />
+            </label>
+            <label class="ldp-field">
+              <span class="ldp-field__label cx-body2">Down Payment</span>
+              <span class="ldp-field__pair">
+                <input class="ldp-field__control" id="calc-down" />
+                <input class="ldp-field__control ldp-field__control--pct" id="calc-down-pct" />
+              </span>
+            </label>
+          </div>
+
+          <p class="cx-caption1 cx-text-subtle ldp-disclaimer">
+            The Payment Calculator is for illustrative purposes only.
+            <a class="cx-link" href="#">Read more</a>
+          </p>
+        </section>
+      </div>
+
+      <!-- ---------- Right column ---------- -->
+      <aside class="ldp-sidebar">
+        <div class="ldp-sidebar__sticky">
+          <div class="ldp-contact" id="sidebar-agent"></div>
+
+          <div class="ldp-sidebar__ctas">
+            <button class="cx-btn cx-btn--solid ldp-cta" type="button">
+              <span class="ldp-cta__stack">
+                <span class="ldp-cta__label" id="tour-label">Request a tour</span>
+                <span class="ldp-cta__sub" id="tour-sub">as early as today at 3:30 PM</span>
+              </span>
+            </button>
+
+            <button
+              class="cx-btn cx-btn--enclosed ldp-cta ldp-cta--secondary"
+              type="button"
+            >
+              Contact an agent
+            </button>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="ldp-footer">
+      <div class="ldp-container">
+        <p class="cx-caption1 cx-text-subtle">
+          Prototype rebuild of the Compass Listing Details Page, built on the
+          Compass Design System token layer. Photos and listing content are
+          copies of the production listing, used as placeholders.
+        </p>
+      </div>
+    </footer>
+
+    <script src="data/listing-single.js"></script>
+    <script src="js/page.js"></script>
+  </body>
+</html>
