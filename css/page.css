@@ -277,11 +277,11 @@
      • the border binds the **semantic** `--cx-color-border` rather than the
        primitive `Neutral 40` the mock uses — same #DADADA, and card.md flags
        that primitive binding as a known token gap.
-     • the radius uses `Shapes/Border Radius/Groups & Inputs`
-       (`--cx-consumer-groupBorderRadius`, 4px in Consumer mode), which is the
-       token the DS Card is actually built on. The mock draws 8px, which isn't
-       any radius token in Consumer mode — set `--ldp-card-radius` to 8px to
-       match the mock instead.
+     • the radius is 8px, via `--cx-consumer-cardBorderRadius`. This is a
+       **proposed** token, not published yet: it resolves to 2px in Agent
+       theme and 8px in Client. That vindicates the mock's 8px — the DS Card
+       is currently built on `Groups & Inputs` (4px in Consumer), which is why
+       this started at 4. See the declaration in css/tokens.css.
 
    Padding is **16px**, not the mock's 20. 20 is off the 8px spacing scale
    (which has 16 and 24, no 20), so this follows the scale — one more place
@@ -289,7 +289,7 @@
    ------------------------------------------------------------------------ */
 
 .ldp-card {
-  --ldp-card-radius: var(--cx-consumer-groupBorderRadius);
+  --ldp-card-radius: var(--cx-consumer-cardBorderRadius);
   --ldp-card-pad: var(--cx-spacing-2x);
 
   padding: var(--ldp-card-pad);
@@ -320,8 +320,8 @@
   padding: 12px;
   border: var(--cx-spacing-borderWidth) solid var(--cx-color-border);
   border-top: 0;
-  border-radius: 0 0 var(--cx-consumer-groupBorderRadius)
-    var(--cx-consumer-groupBorderRadius);
+  border-radius: 0 0 var(--cx-consumer-cardBorderRadius)
+    var(--cx-consumer-cardBorderRadius);
   background: var(--cx-color-backgroundAccent);
 }
 

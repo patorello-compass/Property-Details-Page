@@ -204,8 +204,8 @@ one rule applied to all of them:
 |---|---|---|
 | Fill | `#FFFFFF` (`Semantics/Background/Primary`) | `--cx-color-background` |
 | Border | 1px `#DADADA`, bound to primitive `Neutral/Neutral 40` | 1px **`--cx-color-border`** (same value, semantic) |
-| Radius | 8px | **`--cx-consumer-groupBorderRadius`** (4px) |
-| Padding | 20px | same |
+| Radius | 8px | **`--cx-consumer-cardBorderRadius`** (8px, proposed token) |
+| Padding | 20px | **16px** (`--cx-spacing-2x`) |
 | Gap between cards | 16px | same (`.ldp-main > * + *`) |
 | Section title | `Headers/H4`, 24px, black | same — unchanged from before |
 | Sidebar block | same card, 20px padding, 12px gap | same |
@@ -250,17 +250,27 @@ gap. So:
 
 - **The border binds the semantic `--cx-color-border`**, not the primitive.
   Same `#DADADA`, but it survives a theme change.
-- **The radius uses the `Groups & Inputs` token** — 4px in Consumer mode. The
-  mock draws 8px, which is not any radius token in that mode (`Groups & Inputs`
-  is 4, `Buttons` is 36, `Icon-Only Squared Buttons` is 8). Set
-  `--ldp-card-radius: 8px` on `.ldp-card` to match the mock instead — that is
-  the one knob.
+- **The radius is 8px, via a proposed token.** A card radius resolving to
+  **2px in Agent theme and 8px in Client** is planned but not yet published in
+  `@uc/cx-design-tokens` or the Figma `Shapes` collection. It is declared here
+  as `--cx-consumer-cardBorderRadius` in `css/tokens.css`, flagged PROPOSED,
+  with the Agent value noted as the existing `--cx-spacing-borderRadius` (2px).
+  Swap it for the real token name once the DS ships it.
 
-Two values had no DS equivalent to defer to, so they stay literal and are
-called out rather than dressed up as tokens:
+  This vindicates the mock's 8px. The cards started at 4px because the DS Card
+  is currently built on `Groups & Inputs` (4 in Consumer), and 8 matched no
+  published token in that mode — `Groups & Inputs` 4, `Buttons` 36,
+  `Icon-Only Squared Buttons` 8.
 
-- **20px padding.** The spacing scale has 16 and 24, not 20.
-- **12px footer padding** and the 12px sidebar gap, same reason.
+- **The card padding is 16px, not the mock's 20.** 20 is off the 8px spacing
+  scale (16 and 24, no 20), so the cards use `--cx-spacing-2x`.
+
+Still literal, and called out rather than dressed up as tokens — the scale has
+no 12:
+
+- **12px bottom padding** on a card joined to a footer strip, and **12px** on
+  the strip itself.
+- **12px gap** between the sidebar card's children.
 
 ### The joined footer strip
 

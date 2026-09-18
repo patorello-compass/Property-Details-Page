@@ -311,6 +311,13 @@
   --cx-consumer-borderInteractive: var(--cx-color-grey60);
   --cx-consumer-buttonBorderRadius: 30px;
   --cx-consumer-groupBorderRadius: 4px;
+
+  /* PROPOSED — not yet published in `@uc/cx-design-tokens` or the Figma
+     `Shapes` collection. A card radius that resolves to 2px in Agent theme
+     and 8px in Client; Agent's 2px is the existing `--cx-spacing-borderRadius`,
+     so only the Client value needs declaring here. Replace with the real
+     token name once the DS ships it. */
+  --cx-consumer-cardBorderRadius: 8px;
 }
 
 /* Mobile Compass typography mode — Figma `Typographic Tokens`, Mobile mode */
