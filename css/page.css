@@ -249,7 +249,80 @@
   grid-template-columns: 2fr minmax(280px, 1fr);
   column-gap: var(--cx-spacing-3x);
   align-items: start;
+  /* 16px between the hero and the first card, matching the mock: its
+     slideshow ends at y=580 and the Main Container starts at 596. The same
+     16px the cards use between themselves. */
+  padding-top: var(--cx-spacing-2x);
   padding-bottom: var(--cx-spacing-8x);
+}
+
+/* --- Containerized cards -------------------------------------------------
+   From the Containerization concept
+   (figma.com/design/I6tCuSmkKbYOsKgtn7N48K, node 6381:2814), where every
+   content section sits in its own bordered container inside a 1100 main
+   column — which is where this prototype's 1100 cap comes from.
+
+   Measured off the mock's section frames (Highlights Container, Description,
+   Listing Agents, Location, Property Calculator, and the sidebar block — all
+   identical):
+
+     • white fill, 1px Neutral 40 border, 20px padding, 16px between cards
+     • H4 section title, same as ours already
+     • a card carrying a footer strip loses its bottom corners and drops to
+       12px bottom padding; the strip completes it in Neutral 20
+
+   Two places this follows the design system instead of the mock, per the
+   `card.md` reference:
+
+     • the border binds the **semantic** `--cx-color-border` rather than the
+       primitive `Neutral 40` the mock uses — same #DADADA, and card.md flags
+       that primitive binding as a known token gap.
+     • the radius uses `Shapes/Border Radius/Groups & Inputs`
+       (`--cx-consumer-groupBorderRadius`, 4px in Consumer mode), which is the
+       token the DS Card is actually built on. The mock draws 8px, which isn't
+       any radius token in Consumer mode — set `--ldp-card-radius` to 8px to
+       match the mock instead.
+
+   Padding is **16px**, not the mock's 20. 20 is off the 8px spacing scale
+   (which has 16 and 24, no 20), so this follows the scale — one more place
+   the rebuild defers to the design system over the mock.
+   ------------------------------------------------------------------------ */
+
+.ldp-card {
+  --ldp-card-radius: var(--cx-consumer-groupBorderRadius);
+  --ldp-card-pad: var(--cx-spacing-2x);
+
+  padding: var(--ldp-card-pad);
+  border: var(--cx-spacing-borderWidth) solid var(--cx-color-border);
+  border-radius: var(--ldp-card-radius);
+  background: var(--cx-color-background);
+}
+
+/* Cards stack 16px apart. Using adjacent-sibling margins rather than a flex
+   gap so the footer strip below can opt out of it. */
+.ldp-main > * + * {
+  margin-top: var(--cx-spacing-2x);
+}
+
+/* A card immediately followed by a footer strip reads as a single container.
+   Driven off `:has()` so it survives page.js removing a section — on the
+   single-photo pages the Listing Agents card is dropped and the strip joins
+   the Description card instead, with no markup change. */
+.ldp-card:has(+ .ldp-card__footer) {
+  padding-bottom: 12px;
+  border-bottom: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.ldp-main > .ldp-card__footer {
+  margin-top: 0;
+  padding: 12px;
+  border: var(--cx-spacing-borderWidth) solid var(--cx-color-border);
+  border-top: 0;
+  border-radius: 0 0 var(--cx-consumer-groupBorderRadius)
+    var(--cx-consumer-groupBorderRadius);
+  background: var(--cx-color-backgroundAccent);
 }
 
 /* --- Summary -------------------------------------------------------------
@@ -262,7 +335,6 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  padding: var(--cx-spacing-3x) 0;
 }
 
 .ldp-summary__main {
@@ -405,13 +477,8 @@
 /* Production's rhythm, which is much tighter than the DS spacing scale would
    suggest: 32px between sections, 24px for the first one after the key facts,
    and 12px under every section heading. */
-.ldp-section {
-  margin-top: var(--cx-spacing-4x);
-}
-
-.ldp-facts + .ldp-section {
-  margin-top: var(--cx-spacing-3x);
-}
+/* Vertical rhythm between sections is the 16px card gap now
+   (`.ldp-main > * + *`), not per-section margins. */
 
 .ldp-section__title {
   margin-bottom: 12px;
@@ -478,10 +545,7 @@
 }
 
 /* `listing-info__Root` — 16px above, 16px of its own padding */
-.ldp-meta {
-  margin-top: var(--cx-spacing-2x);
-  padding: var(--cx-spacing-2x) 0;
-}
+/* Padding and border come from `.ldp-card__footer`. */
 
 .ldp-meta p + p {
   margin-top: var(--cx-spacing-half);
@@ -658,13 +722,19 @@
 /* --- Sidebar -------------------------------------------------------------- */
 
 /* Production offsets the right column's first block 24px below the gallery */
+/* Both columns start at the same y in the mock's Columns frame, so the
+   sidebar card top-aligns with the first content card — no offset here. */
 .ldp-sidebar {
-  padding-top: var(--cx-spacing-3x);
+  padding-top: 0;
 }
 
+/* The mock cards the sidebar block too — same treatment, 12px gap. */
 .ldp-sidebar__sticky {
   position: sticky;
   top: 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 /* Production `.info-content`: flex, gap 16px, inside a 24px 0 padded block.
@@ -673,7 +743,6 @@
   display: flex;
   align-items: center;
   gap: var(--cx-spacing-2x);
-  padding: var(--cx-spacing-3x) 0;
 }
 
 .ldp-contact__photo {
@@ -707,12 +776,13 @@
 /* CTA stack — production caps both buttons at 277px */
 .ldp-sidebar__ctas {
   display: grid;
-  gap: var(--cx-spacing-2x);
+  gap: 12px;
 }
 
+/* Both CTAs are `FILL` in the mock — 335px inside a 375 card, i.e. the full
+   content box — so they line up with the agent block above them. */
 .ldp-cta {
   width: 100%;
-  max-width: 277px;
   height: 60px;
   border-radius: 9999px;
   font-size: var(--cx-font-sizeBody1);

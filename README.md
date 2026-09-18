@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/32254429/README.md)
 # Listing Detail Page — Compass LDP rebuild
 
 A static rebuild of the production Compass Listing Details Page for
@@ -15,26 +14,30 @@ believable page around it, not a faithful reproduction of every module.
 node "Listing Detail Page/serve.mjs" 5273
 ```
 
-Then open <http://localhost:5273>. Any static server works; the page has no
-build step, no bundler, and no npm dependencies. (Opening `index.html` over
-`file://` mostly works but the self-hosted fonts will not load.)
+Then open <http://localhost:5273>. `index.html` is a plain index that links to
+the four versions — it loads no page chrome, so it can't be mistaken for one of
+them. Any static server works; there is no build step, no bundler, and no npm
+dependencies. (Opening over `file://` mostly works but the self-hosted fonts
+will not load.)
 
 ## Layout
 
 ```
 Listing Detail Page/
-├── index.html              15-photo listing (159 E 63rd St)
+├── index.html              entry point — links to the four versions
+├── heroSlider.html         15-photo listing (159 E 63rd St)
+├── heroSliderMaxWidth.html …the same page with the gallery capped at 2600px
 ├── single-image.html       1-photo listing (807 Lake St S, Unit 301)
 ├── portrait.html           …the same listing with a 2:3 portrait photo
 ├── serve.mjs               Zero-dependency static server for local preview
 ├── css/
 │   ├── tokens.css          Compass DS token layer (--cx-* custom properties)
 │   ├── base.css            @font-face, reset, type scale, button recipes
-│   ├── hero-gallery.css    ← the slider (index.html only)
-│   ├── hero-photo.css      single-image hero (single-image.html only)
+│   ├── hero-gallery.css    ← the slider (heroSlider* pages only)
+│   ├── hero-photo.css      single-photo hero (single-image / portrait)
 │   └── page.css            Everything else
 ├── js/
-│   ├── hero-gallery.js     ← the slider engine (index.html only)
+│   ├── hero-gallery.js     ← the slider engine (heroSlider* pages only)
 │   └── page.js             Binds the fixture into the shell
 ├── data/
 │   ├── listing.js          15-photo fixture
@@ -46,7 +49,7 @@ Listing Detail Page/
 ```
 
 The cx-icon sprite and the Compass logotype live inline at the top of
-`index.html` — see **Design system grounding** below.
+`heroSlider.html` — see **Design system grounding** below.
 
 ## Design system grounding
 
@@ -72,7 +75,7 @@ Two things worth calling out:
 
 Fonts are self-hosted copies of `ucfe-assets/fonts/3.10.0/*.woff2`.
 
-**Icons** are the real ones. `index.html` opens with an inline `<svg class="cx-sprite">`
+**Icons** are the real ones. `heroSlider.html` opens with an inline `<svg class="cx-sprite">`
 holding the Compass logotype and the subset of `cx-icons`
 (`ucfe-assets/cx-icons/7/cx-icons.cdn.svg`) this page uses —
 `magnifyingGlass`, `chevronDown`, `chevronLeft`, `starOutlined`,
@@ -115,10 +118,36 @@ Two details worth keeping: the search field and its button are a joined pair
 in Consumer mode), and the placeholder is a size smaller than the input's own
 text — 14px inside a 16px field.
 
+### Capped-width variant — `heroSliderMaxWidth.html`
+
+`heroSliderMaxWidth.html` is a byte-for-byte copy of `heroSlider.html` apart from one class on
+the gallery section: `ldp-gallery--capped` stops the band at **2600px** and
+centres it, instead of running full-bleed. It exists to compare the two
+behaviours side by side — production caps its own gallery at 2000px and lets
+the page keep growing around it.
+
+Nothing in the engine changed. `HeroGallery` measures
+`.ldp-gallery__viewport`, not `window.innerWidth`, so the cap propagates on
+its own:
+
+| viewport | gallery | photo band | slides in view | columns |
+|---|---|---|---|---|
+| 1920 | 1920 (uncapped) | 1888 | 848 × 450 | 3 |
+| 2600 | 2600 (at the cap) | 2568 | 848 × 450 | 3 |
+| 3440 | **2600**, centred | 2568 | 848 × 450 | 3 |
+
+Past 2600 the slide count, band height and crops all freeze — the gallery just
+gains white space either side while the content container below it stays at
+its own 1100 cap. Paging, drag and the counter are unaffected.
+
+The cap lives on `.ldp-gallery--capped` in `css/hero-gallery.css` as
+`--gallery-max-width`, so it can be retuned in one place; the class is inert
+on any page that doesn't apply it, which is why `heroSlider.html` is untouched.
+
 ## Content container
 
-The container (`app__StyledMain`) is **fluid, not a fixed max-width**. Measured
-on production across viewports:
+Production's container (`app__StyledMain`) is **fluid, not a fixed
+max-width**. Measured on production across viewports:
 
 | viewport | 900 | 1024 | 1200 | 1280 | 1440 | 1600 | 1920 | 2400 |
 |---|---|---|---|---|---|---|---|---|
@@ -126,19 +155,133 @@ on production across viewports:
 | left col | 548 | 635 | 732 | 732 | 732 | 805 | 976 | 976 |
 | right col | 280 | 317 | 366 | 366 | 366 | 403 | 488 | 488 |
 
-So: **80% of the viewport, floored at 1170 and capped at 1536**, never wider
-than the viewport itself — `width: clamp(1170px, 80%, 1536px); max-width: 100%`.
-It stays at 1170 until ~1463px (1170 / 0.8), then grows to 1536 at 1920 and
-stops. Padding is a constant 24px each side, so the inner content box is 1122
-at 1440 and 1488 at 1920.
+That is **80% of the viewport, floored at 1170 and capped at 1536**, never
+wider than the viewport itself — `clamp(1170px, 80%, 1536px)`.
 
-Columns are `2fr minmax(280px, 1fr)` with a 24px gap — which resolves to
-exactly 732 / 366 at 1440, 976 / 488 at 1920, and 548 / 280 at 900 where the
-sidebar floor takes over. Every number in the table above is reproduced to the
-pixel.
+**This prototype caps the container at 1100 instead** (`--ldp-container-max`
+in `css/base.css`). 1100 sits *below* production's 1170 floor, so the fluid
+rule no longer has anything to do: the container is a flat 1100 from 1100px
+upwards and simply fills the viewport below that. Padding stays 24px each
+side, so the inner content box is a constant 1052.
 
-The single-column collapse happens **below 769px**, not 1024 — production is
+| viewport | 375 | 900 | 1024 | 1100 | 1440 | 1920 | 3440 |
+|---|---|---|---|---|---|---|---|
+| container | 375 | 900 | 1024 | 1100 | **1100** | **1100** | **1100** |
+| content box | 343 | 852 | 976 | 1052 | 1052 | 1052 | 1052 |
+| left col | — | 548 | 635 | 685 | 685 | 685 | 685 |
+| right col | — | 280 | 317 | 343 | 343 | 343 | 343 |
+
+Columns are still `2fr minmax(280px, 1fr)` with a 24px gap, which now resolves
+to 685 / 343 above 1100 and still hands over to the 280 sidebar floor at 900.
+The single-column collapse stays **below 769px**, not 1024 — production is
 still two-column at 900px.
+
+The key-facts grid narrows with it — 218px cards at every desktop width,
+down from 315 — and none of the five labels or values clip at that width.
+
+Two things deliberately do **not** follow the cap:
+
+- **The hero gallery** (`heroSlider.html`, `heroSliderMaxWidth.html`) is full-bleed, so it is
+  unaffected: 1888 of photo at 1920 while the content below is 1100.
+  `heroSliderMaxWidth.html` caps the gallery separately at 2600.
+- **The top bar and sub-nav** were always full-width with their own padding,
+  measured off production.
+
+`css/hero-photo.css` reads the same `--ldp-container-max`, so the
+single-photo hero tracks the container without repeating the number.
+
+## Containerized content cards
+
+The content sections sit in bordered cards, taken from the **Containerization**
+concept file ([node `6381:2814`](https://www.figma.com/design/I6tCuSmkKbYOsKgtn7N48K/Containerization?node-id=6381-2814)).
+That file's `Main Container` is 1100 wide — which is where this prototype's
+1100 container cap comes from.
+
+Every section frame in the mock carries the same treatment, so `.ldp-card` is
+one rule applied to all of them:
+
+| | mock | rebuild |
+|---|---|---|
+| Fill | `#FFFFFF` (`Semantics/Background/Primary`) | `--cx-color-background` |
+| Border | 1px `#DADADA`, bound to primitive `Neutral/Neutral 40` | 1px **`--cx-color-border`** (same value, semantic) |
+| Radius | 8px | **`--cx-consumer-groupBorderRadius`** (4px) |
+| Padding | 20px | same |
+| Gap between cards | 16px | same (`.ldp-main > * + *`) |
+| Section title | `Headers/H4`, 24px, black | same — unchanged from before |
+| Sidebar block | same card, 20px padding, 12px gap | same |
+
+### Surfaces
+
+The page sits on an accent surface so the white cards read as raised:
+
+| surface | token | value |
+|---|---|---|
+| Page (`body`) | `--cx-color-backgroundAccent` | `#F4F4F4` (Neutral 20) |
+| Top bar, sub-nav | `--cx-color-background` | `#FFFFFF` |
+| Hero band / hero photo section | *unfilled* | page shows through |
+| Content cards, sidebar card | `--cx-color-background` | `#FFFFFF` |
+| Portrait mat | `--cx-color-grey30` | `#E8E8E8` (Neutral 30) |
+| Key-fact sub-cards, MLS strip | `--cx-color-backgroundAccent` | `#F4F4F4` |
+
+The hero band and hero-photo section used to paint white; they are unfilled now
+so the accent surface shows through the hero's 16px top gap and side gutters,
+as the mock's slideshow frame does.
+
+**Two notes for the Design System team**, both surfaced by this change:
+
+1. **The mock's page is Neutral 10 (`#FAFAFA`), not Neutral 20.** Its `Desktop`
+   frame binds `Neutral/Neutral 10`. This prototype uses Neutral 20 by choice.
+   The consequence is that every `#F4F4F4` element loses contrast against the
+   page — hence the portrait mat stepping down to Neutral 30.
+2. **The portrait mat has no semantically correct token.** It needs a "mat /
+   inset surface" one step darker than the page. The only semantics that
+   resolve to `#E8E8E8` are `Background/selectedBackground` (a selection
+   state) and `Border/Disabled` — both wrong in meaning — so the mat binds the
+   **primitive** `--cx-color-grey30`, against the usual prefer-semantics rule.
+   The same gap applies to the MLS footer strip, which is still Neutral 20 and
+   therefore the same colour as the page.
+
+### Where this follows the design system instead of the mock
+
+Per the skill's `card.md` reference, the DS Card is built on
+`Neutral 0 (White)` + `Neutral 40` with a `Shapes/Border Radius/Groups & Inputs`
+radius, and `card.md` explicitly flags the primitive bindings as a known token
+gap. So:
+
+- **The border binds the semantic `--cx-color-border`**, not the primitive.
+  Same `#DADADA`, but it survives a theme change.
+- **The radius uses the `Groups & Inputs` token** — 4px in Consumer mode. The
+  mock draws 8px, which is not any radius token in that mode (`Groups & Inputs`
+  is 4, `Buttons` is 36, `Icon-Only Squared Buttons` is 8). Set
+  `--ldp-card-radius: 8px` on `.ldp-card` to match the mock instead — that is
+  the one knob.
+
+Two values had no DS equivalent to defer to, so they stay literal and are
+called out rather than dressed up as tokens:
+
+- **20px padding.** The spacing scale has 16 and 24, not 20.
+- **12px footer padding** and the 12px sidebar gap, same reason.
+
+### The joined footer strip
+
+In the mock, the MLS line sits in a `Neutral 20` strip that completes the
+Description card: the card above loses its bottom corners and drops to 12px
+bottom padding, and the strip carries the bottom radius. `.ldp-meta` renders
+as that strip.
+
+The join is driven by `:has(+ .ldp-card__footer)` rather than a wrapper, so it
+follows the content:
+
+- **`heroSlider.html` / `heroSliderMaxWidth.html`** — the strip joins the **Listing Agents**
+  card, which is what precedes it in our markup.
+- **`single-image.html` / `portrait.html`** — `page.js` removes the Listing
+  Agents section (no agents in the fixture), so the strip joins the
+  **Description** card instead, exactly as in the mock. No markup change, no
+  JS change.
+
+No content was added or reordered for any of this — only the container
+classes. The card order is still ours: summary, key facts, Description,
+Listing Agents, MLS strip, Location, Payment Calculator.
 
 ## Summary row, key facts and vertical rhythm
 
@@ -157,8 +300,9 @@ The key-fact count is per listing, not fixed: 5 on both of ours, matching each
 listing's own production page (the Newport listing in the reference screenshot
 has 6, which the same 3-column grid handles).
 
-**Vertical rhythm** is where production departs most from the DS spacing scale,
-so these are literal values rather than tokens:
+**Vertical rhythm** below was production's, measured before the cards went in.
+The card gap (16px) now governs the spacing *between* sections; these values
+still describe the rhythm *inside* each card:
 
 | | production |
 |---|---|
@@ -353,7 +497,7 @@ retune geometry.
 
 `single-image.html` is the same page with a one-photo hero, modelled on
 [807 Lake St S, Unit 301](https://www.compass.com/homedetails/807-Lake-St-S-Unit-301-Kirkland-WA-98033/1S0KVJ_pid/).
-Everything below the hero is byte-identical to `index.html` — same chrome,
+Everything below the hero is byte-identical to `heroSlider.html` — same chrome,
 same CSS, same `js/page.js`.
 
 **The hero is not a carousel.** A one-photo listing gets a plain image, so it
@@ -376,59 +520,41 @@ The two share the badge markup — the host element names its own class via
 in — and they share the same height ladder (450 / 354 / 336), so the crops stay
 in the same territory.
 
-### Sized to the main content column, with a mat behind the photo
+### Sized to the content container; the mat is portrait-only
 
-Letting the photo span the whole container at a fixed 450 height gives a very
-wide crop — 1138 × 450 (**2.53**) at 1440, and 1504 × 450 (**3.34**) by 1920,
-far past anything the carousel reaches. With the height capped at 450, width is
-the only lever left.
+The frame spans **the container's full content box** — the same left and right
+edges as everything below it, main column and sidebar together. At a fixed 450
+height that is a wide window, and the landscape photo crops to fill it:
 
-So the frame takes **the main content column** — the same left edge and width as
-the price block, description and everything else below it:
-
-| viewport | frame | landscape photo | aligned to `.ldp-main` |
+| viewport | frame | landscape photo | aspect |
 |---|---|---|---|
-| 375 | 343 × 336 | 327 × 320 · 1.02 | ✓ |
-| 900 | 548 × 354 | 524 × 330 · 1.59 | ✓ |
-| 1024 | 635 × 450 | 611 × 426 · 1.43 | ✓ |
-| 1440 | 732 × 450 | 708 × 426 · 1.66 | ✓ |
-| 1920 | 976 × 450 | 952 × 426 · 2.23 | ✓ |
+| 375 | 343 × 336 | 343 × 336 | 1.02 |
+| 900 | 852 × 354 | 852 × 354 | 2.41 |
+| 1024 | 976 × 450 | 976 × 450 | 2.17 |
+| 1100 | 1052 × 450 | 1052 × 450 | 2.34 |
+| 1440 | 1052 × 450 | 1052 × 450 | 2.34 |
+| 1920 | 1052 × 450 | 1052 × 450 | 2.34 |
 
-Bounding the aspect falls out of that for free — 1.43 to 2.23, the same
-territory a carousel slide occupies, and it can't get worse than 2.23 because
-the container stops at 1536. The section still spans the content container,
-which is itself untouched.
+With the container capped at 1100 the crop settles at a constant **2.34** from
+1100px up — a little wider than the carousel's widest slide (2.10) but in the
+same territory, and it no longer drifts with the viewport. Before the cap this
+reached 3.31 at 1920.
 
-The frame also doubles as a **mat** (`--hero-photo-mat`, Neutral 20) with the
-photo centred on it rather than stretched to fill, and it carries a
-`--hero-photo-mat-pad` of 12px (8px below 768) so a strip of grey shows all the
-way around even when the photo fills the frame. A landscape photo takes the
-whole content box of the mat; a portrait one runs narrow and the mat takes the
-rest.
+The **mat** (`--hero-photo-mat`, Neutral 20, with `--hero-photo-mat-pad`) is a
+**portrait-only override**, not a base behaviour. The base sets the mat
+transparent at zero padding so the landscape photo reaches the frame's edges;
+`.ldp-hero-photo--portrait` switches both on. That single pair of custom
+properties is the whole difference between the two pages.
 
 The two overlays anchor to different boxes, which is the reason `__actions`
 sits outside `__media`:
 
 - **Badges** are on `__media`, sized to the photo, so they stay on the image
   wherever it lands — top-left of the photo on both pages.
-- **Street View** is on `__frame`, offset by `mat-pad + inset`, so it holds the
-  same spot near the frame's left border on both. On the landscape page that
-  lands 12px inside the photo, exactly where it sat before the mat existed; on
-  the portrait page it stays put on the grey instead of drifting inward with
-  the narrow photo.
-
-The width is derived in CSS rather than hard-coded, so it tracks the page grid:
-
-```css
---hero-photo-width: min(
-  calc((100% - var(--hero-photo-column-gap)) * 2 / 3),          /* 2fr */
-  calc(100% - var(--hero-photo-column-gap) - var(--hero-photo-sidebar-min))
-);                                                  /* …unless sidebar floors */
-```
-
-The second branch covers the 769–~960 range where `.ldp-layout`'s
-`minmax(280px, 1fr)` sidebar stops shrinking and the main column takes less
-than two thirds — verified at 900, where both land on 548.
+- **Street View** is on `__frame`, offset by `mat-pad + inset`. With no mat that
+  collapses to a plain 12px inset; with the portrait mat it clears the grey.
+  Either way the button lands in the same visual spot, and neither page needs
+  a special case.
 
 ### Portrait photos — `portrait.html`
 
@@ -437,40 +563,41 @@ instead of a landscape one. It loads the same fixture and then
 `data/listing-portrait.js` swaps the photo, so orientation is the only
 variable.
 
-A portrait photo is the case a landscape frame can't absorb. At 732 × 450 a
-cover crop keeps roughly a 30% horizontal band of a 2:3 source — the subject
-disappears. The mat handles it with no special casing beyond letting the photo
-size to its own ratio:
+A portrait photo is the case the landscape frame can't absorb. At 1052 × 450 a
+cover crop would keep roughly a 28% horizontal band of a 2:3 source — the
+subject disappears. So the photo runs at its own ratio and the mat takes the
+rest of the frame:
 
 | viewport | frame (mat) | photo | crop |
 |---|---|---|---|
 | 375 | 343 × 336 | 213 × 320 · **0.667** | none |
-| 900 | 548 × 354 | 220 × 330 · **0.667** | none |
-| 1440 | 732 × 450 | 284 × 426 · **0.667** | none |
-| 1920 | 976 × 450 | 284 × 426 · **0.667** | none |
+| 900 | 852 × 354 | 220 × 330 · **0.667** | none |
+| 1024 | 976 × 450 | 284 × 426 · **0.667** | none |
+| 1100 | 1052 × 450 | 284 × 426 · **0.667** | none |
+| 1920 | 1052 × 450 | 284 × 426 · **0.667** | none |
 
-Same frame, same 450 ceiling, same centring as the landscape page — the photo
-is simply narrower, so the mat shows either side. Zero crop at every size, and
-the variant is two declarations (`width: auto`, `object-fit: contain`) because
-the mat-and-centre behaviour is the base component's job.
+Same frame, same 450 ceiling — the photo is simply narrow, so most of the frame
+is grey: 384px of mat either side above 1100. Zero crop at every size, and
+the variant is four declarations (the two mat properties, plus `width: auto`
+and `object-fit: contain`).
 
 ### Mechanically
 
 ```
 .ldp-hero-photo          section — content container, 24px gutter, 16px top
-  └ __frame              the main column, 450 tall, grey mat, 12px padding
-      ├ __media          the photo's box — fills the mat, or natural if portrait
+  └ __frame              the container's content box, 450 tall; mat if portrait
+      ├ __media          the photo's box — fills the frame, or natural if portrait
       │   ├ __img        object-fit: cover (contain when portrait)
       │   └ __badges     absolute, 12px inset — rides with the photo
       └ __actions        absolute, mat-pad + inset from the frame's corner
-  └ __caption            10px below, matched to the frame width
+  └ __caption            10px below, spanning the frame
 ```
 
 Tunables live on `.ldp-hero-photo`: `--hero-photo-height`, `--hero-photo-mat`,
-`--hero-photo-mat-pad`, `--hero-photo-gutter`, `--hero-photo-column-gap`,
-`--hero-photo-sidebar-min`, `--hero-photo-inset`, `--hero-photo-top-gap`,
-`--hero-photo-caption-gap`. The three grid ones mirror `.ldp-container` /
-`.ldp-layout` — change the page grid and they need changing with it.
+`--hero-photo-mat-pad`, `--hero-photo-gutter`, `--hero-photo-inset`,
+`--hero-photo-top-gap`, `--hero-photo-caption-gap`. `--hero-photo-gutter`
+mirrors `.ldp-container`'s padding — change that and this needs changing with
+it. The mat pair is overridden by `.ldp-hero-photo--portrait`.
 
 ### Data-driven differences
 

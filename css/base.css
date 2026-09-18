@@ -68,7 +68,10 @@ html {
 
 body {
   margin: 0;
-  background: var(--cx-color-background);
+  /* Accent surface behind the containerized cards, so the white cards read as
+     raised. The mock uses Neutral 10 (#FAFAFA) for this; see the README note
+     on the collisions that Neutral 20 creates. */
+  background: var(--cx-color-backgroundAccent);
   color: var(--cx-color-text);
   font-family: var(--cx-font-familySans);
   font-size: var(--cx-font-sizeBody1);
@@ -279,26 +282,36 @@ ul {
 
 /* --- Layout --------------------------------------------------------------- */
 
-/* Production LDP content container (`app__StyledMain`) — fluid, not fixed.
-   Measured across viewports:
+/* Content container width.
+
+   Production's own container (`app__StyledMain`) is fluid, not fixed —
+   `clamp(1170px, 80%, 1536px)`, measured across viewports:
 
      viewport   1024   1200   1280   1440   1600   1920   2400
      container  1024   1170   1170   1170   1280   1536   1536
 
-   i.e. 80% of the viewport, floored at 1170 and capped at 1536, and never
-   wider than the viewport itself. It starts growing past 1170 at ~1463px
-   (1170 / 0.8) and stops at 1920. Padding is a constant 24px each side, so
-   the inner content box is 1122 at 1440 and 1488 at 1920. */
+   This prototype caps it at 1100 instead. Note that 1100 sits *below*
+   production's 1170 floor, so the fluid rule has nothing left to do: the
+   container is a flat 1100 from 1100px upwards and simply fills the viewport
+   below that. Padding stays a constant 24px each side, so the inner content
+   box is a constant 1052.
+
+   `--ldp-container-max` is the single source of truth for that cap.
+   css/hero-photo.css reads it too, so the single-photo hero tracks the
+   container without repeating the number. */
+:root {
+  --ldp-container-max: 1100px;
+}
+
 .ldp-container {
-  width: clamp(1170px, 80%, 1536px);
-  max-width: 100%;
+  width: 100%;
+  max-width: var(--ldp-container-max);
   margin: 0 auto;
   padding: 0 var(--cx-spacing-3x);
 }
 
 @media (max-width: 768px) {
   .ldp-container {
-    width: 100%;
     padding: 0 var(--cx-spacing-2x);
   }
 }

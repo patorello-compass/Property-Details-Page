@@ -187,7 +187,7 @@
         <!-- Summary — content column plus the 120px map thumbnail that sits
              at its right edge (production puts the map here, not in the
              sidebar) -->
-        <section class="ldp-summary">
+        <section class="ldp-summary ldp-card">
           <div class="ldp-summary__main">
             <p class="ldp-status">
               <span class="ldp-status__dot"></span>
@@ -215,10 +215,12 @@
         </section>
 
         <!-- Key facts -->
-        <ul class="ldp-facts" id="facts-grid"></ul>
+        <section class="ldp-card">
+          <ul class="ldp-facts" id="facts-grid"></ul>
+        </section>
 
         <!-- Description -->
-        <section class="ldp-section">
+        <section class="ldp-section ldp-card">
           <h2 class="ldp-section__title cx-h4">Description</h2>
           <div class="ldp-description" id="description-body"></div>
           <button class="ldp-readmore cx-body2-medium" type="button">
@@ -233,12 +235,12 @@
         </section>
 
         <!-- Listing agents — removed by page.js when the fixture has none -->
-        <section class="ldp-section">
+        <section class="ldp-section ldp-card">
           <h2 class="ldp-section__title cx-h4">Listing Agents</h2>
           <ul class="ldp-agents" id="agents-list"></ul>
         </section>
 
-        <div class="ldp-meta">
+        <div class="ldp-meta ldp-card__footer">
           <p class="cx-body2" id="meta-days-row">
             <strong id="meta-days">88 days</strong> on Market
           </p>
@@ -246,7 +248,7 @@
         </div>
 
         <!-- Location -->
-        <section class="ldp-section" id="location">
+        <section class="ldp-section ldp-card" id="location">
           <h2 class="ldp-section__title cx-h4">Location</h2>
           <nav class="ldp-breadcrumbs cx-caption1" id="breadcrumbs"></nav>
 
@@ -275,7 +277,7 @@
         </section>
 
         <!-- Payment calculator -->
-        <section class="ldp-section">
+        <section class="ldp-section ldp-card">
           <h2 class="ldp-section__title cx-h4">Payment Calculator</h2>
           <a class="cx-link cx-body2 ldp-preapproved" href="#"
             >Get preapproved with Rocket Mortgage<sup>1</sup></a
@@ -326,7 +328,7 @@
 
       <!-- ---------- Right column ---------- -->
       <aside class="ldp-sidebar">
-        <div class="ldp-sidebar__sticky">
+        <div class="ldp-sidebar__sticky ldp-card">
           <div class="ldp-contact" id="sidebar-agent"></div>
 
           <div class="ldp-sidebar__ctas">

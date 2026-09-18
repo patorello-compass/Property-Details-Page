@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>807 Lake St S, Unit 301 — Compass LDP rebuild (single image)</title>
+    <title>159 East 63rd Street — Compass LDP rebuild (gallery capped at 2600)</title>
 
     <link rel="stylesheet" href="css/tokens.css" />
     <link rel="stylesheet" href="css/base.css" />
-    <link rel="stylesheet" href="css/hero-photo.css" />
+    <link rel="stylesheet" href="css/hero-gallery.css" />
     <link rel="stylesheet" href="css/page.css" />
   </head>
 
@@ -131,7 +131,7 @@
           <a class="is-active" href="#overview">Overview</a>
           <a href="#location">Location</a>
           <a href="#property-info">Property Info</a>
-          <a href="#public-records">Public Records</a>
+          <a href="#property-history">Property History</a>
           <a href="#schools">Schools</a>
           <a href="#similar-homes">Similar Homes</a>
         </nav>
@@ -153,31 +153,70 @@
       </div>
     </div>
 
-    <!-- ================= Hero photo =================
-         A one-photo listing is a plain image, not a carousel — its own
-         component, with no slider machinery behind it. -->
-    <section class="ldp-hero-photo" aria-label="Property photo">
-      <figure class="ldp-hero-photo__frame">
-        <div class="ldp-hero-photo__media">
-          <img class="ldp-hero-photo__img" id="hero-photo" src="" alt="" />
+    <!-- ================= Hero gallery ================= -->
+    <!-- The focus of this rebuild. Markup is deliberately thin: HeroGallery
+         renders every slide, so layout rules live in js/hero-gallery.js.
 
-          <!-- Badges ride with the photo -->
-          <div
-            class="ldp-hero-photo__badges"
-            id="hero-badges"
-            data-badge-class="ldp-hero-photo__badge"
-          ></div>
-        </div>
+         This page differs from heroSlider.html in one class: `--capped` stops
+         the band at 2600px instead of running full-bleed. See the variant
+         block in css/hero-gallery.css. -->
+    <section
+      class="ldp-gallery ldp-gallery--capped"
+      id="hero-gallery"
+      aria-roledescription="carousel"
+      aria-label="Property photos"
+      tabindex="-1"
+    >
+      <div class="ldp-gallery__viewport">
+        <div class="ldp-gallery__track"></div>
+      </div>
 
-        <!-- …the button stays anchored to the frame's bottom-left -->
-        <div class="ldp-hero-photo__actions">
+      <div class="ldp-gallery__overlay">
+        <div
+          class="ldp-gallery__badges"
+          id="gallery-badges"
+          data-badge-class="ldp-gallery__badge"
+        ></div>
+
+        <button
+          class="ldp-gallery__nav ldp-gallery__nav--prev"
+          type="button"
+          aria-label="Previous photos"
+        >
+          <svg class="ldp-gallery__nav-icon"><use href="#gallery-arrow"></use></svg>
+        </button>
+        <button
+          class="ldp-gallery__nav ldp-gallery__nav--next"
+          type="button"
+          aria-label="Next photos"
+        >
+          <svg class="ldp-gallery__nav-icon"><use href="#gallery-arrow"></use></svg>
+        </button>
+
+        <div class="ldp-gallery__actions ldp-gallery__actions--start">
+          <button class="cx-btn cx-btn--enclosed cx-btn--md" type="button">
+            Floor Plan
+          </button>
           <button class="cx-btn cx-btn--enclosed cx-btn--md" type="button">
             Street View
           </button>
         </div>
-      </figure>
 
-      <p class="ldp-hero-photo__caption" id="hero-caption"></p>
+        <div class="ldp-gallery__actions ldp-gallery__actions--end">
+          <button
+            class="cx-btn cx-btn--enclosed cx-btn--md"
+            type="button"
+            id="all-photos-btn"
+          >
+            <svg class="cx-icon" width="16" height="16">
+              <use href="#cx-icon-squaresInThreeRows"></use>
+            </svg>
+            <span id="photo-count-label">15 Photos</span>
+          </button>
+        </div>
+
+        <div class="ldp-gallery__counter" id="gallery-counter">1 of 15</div>
+      </div>
     </section>
 
     <!-- ================= Body ================= -->
@@ -360,7 +399,8 @@
       </div>
     </footer>
 
-    <script src="data/listing-single.js"></script>
+    <script src="data/listing.js"></script>
+    <script src="js/hero-gallery.js"></script>
     <script src="js/page.js"></script>
   </body>
 </html>

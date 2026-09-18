@@ -62,8 +62,27 @@
   position: relative;
   /* 16px above the band, matching the production section wrapper (h = 466) */
   padding: var(--gallery-top-gap) var(--gallery-page-gutter) 0;
-  background: var(--cx-color-background);
+  /* No fill: the page's accent surface shows through the top gap and gutters,
+     as the mock's slideshow frame does. */
   user-select: none;
+}
+
+/* --- Capped-width variant (index2.html) ----------------------------------
+   The base band is full-bleed and keeps widening with the viewport. This caps
+   the gallery and centres it, the way production caps its own gallery at
+   2000px while the page around it keeps growing.
+
+   Nothing else has to change: the engine measures `.ldp-gallery__viewport`
+   rather than `window.innerWidth`, so once the cap bites it solves against
+   2568px of photo (2600 less the two 16px gutters) and the slide count,
+   band height and crops all freeze there.
+   ------------------------------------------------------------------------ */
+
+.ldp-gallery--capped {
+  --gallery-max-width: 2600px;
+
+  max-width: var(--gallery-max-width);
+  margin-inline: auto;
 }
 
 /* --- Viewport + track ----------------------------------------------------- */
